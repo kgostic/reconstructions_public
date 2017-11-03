@@ -5,6 +5,20 @@ Current data allows reoncstrucitons up to 2017.
 
 
 
+WORKFLOW for adding new countries:
+----------------------------------
+1. Go to http://apps.who.int/flumart/Default?ReportNo=12
+2. Display report for the country(ies) of interest starting at week 1 of the earliest possible year and continuing to the final week of the current year
+3. Click on the disk icon at the top middle of the page to save the output as a .csv. The file will automatically save to Downloads.
+4. Move the file to ~/Dropbox/R/Reconstructions under the filname COUNTRY_cocirculation.csv
+5. Open Reformat_WHO_to_master.R
+6. Import the new file from step 4 into the script and run the script to reformat. The script will save a reformatted file under "Reformatted_output.csv"
+7. Copy the reformatted output into CocirculationData.csv and save
+8. Repeat 1-7 for all countries of interest
+9 Add the countries of interest at line 39 of Infection_age_structure_2017.R and verify that the script works
+
+
+
 Classes of .csv files:
 -----------------------
 .*cocirculation.csv contains raw data dowlonaded from WHO Flu Net for the countrie(s) and years of interest
@@ -27,3 +41,5 @@ gete_ij_2017.R    Defines a function that estimates the probabiltiy of first exp
 get.country.cocirculation.data_2017.R
 
 Infection_age_structure_2017.R
+
+Reformat_WHO_to_master.R    Loads a .csv using the raw WHO format (eg .*cocirculation.csv), and reformats the data to match the format of CocirculationData.csv
