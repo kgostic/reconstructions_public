@@ -7,11 +7,13 @@
 # weighted.attack.rate = p.est*(intensities$Intensity); names(weighted.attack.rate) = 1911:2015
 
 
-get.type.weights.AB = function(years.out, Countries.out, type = 5){
+get.type.weights.AB = function(years.out, Countries.out, type = 5, region.in = 'default'){
+  
+  if(length(region.in) == 1) {region.in = rep('default', length(Countries.out))}
   
   # This script imports a .csv that holds data on which subtypes (H1N1, H3N2 and influenza B) were observed in specific countries, and in specific years.
   # This script also sources two functions, get.cocirculation.ref and get.country.data, which we will use below to format a matrix that tells what fraction of circulation was driven by H1N1 vs. H3N2 in a given season
-  source('Clean_CocirculationImport_2017.R')
+  source('~/Dropbox/R/Reconstructions/Clean_CocirculationImport_2017.R')
   head(cocirculation) # Data frame that records which subtypes circulated in each country and year
   
   # Set years of birth (we will estimate probabilities of imprinting to H1N1, H2N2 and H3N2 for each of these birth years)
@@ -36,19 +38,35 @@ get.type.weights.AB = function(years.out, Countries.out, type = 5){
   for(cc in 1:length(Countries.out)){ 
     
     # Extract country-sepcific data on which subtypes circulated in past years
-    if(Countries.out[cc] == 'China'){cocirculation.dat = get.cocirculation.ref('China')}
-    if(Countries.out[cc] == 'Egypt'){cocirculation.dat = get.cocirculation.ref('Egypt')}
-    if(Countries.out[cc] == 'Indonesia'){cocirculation.dat = get.cocirculation.ref('Indonesia')}
-    if(Countries.out[cc] == 'Cambodia'){cocirculation.dat = get.cocirculation.ref('Cambodia')}
-    if(Countries.out[cc] == 'Vietnam'){cocirculation.dat = get.cocirculation.ref('Vietnam')}
-    if(Countries.out[cc] == 'Thailand'){cocirculation.dat = get.cocirculation.ref('Thailand')}
-    if(Countries.out[cc] == 'USA'){cocirculation.dat = get.cocirculation.ref('USA')}
-    if(Countries.out[cc] == 'UK'){cocirculation.dat = get.cocirculation.ref('UK')}
-    if(Countries.out[cc] == 'Turkey'){cocirculation.dat = get.cocirculation.ref('Turkey')}
-    if(Countries.out[cc] == 'Iraq'){cocirculation.dat = get.cocirculation.ref('Iraq')}
-    if(Countries.out[cc] == 'Azerbaijan'){cocirculation.dat = get.cocirculation.ref('Azerbaijan')}
-    if(Countries.out[cc] == 'Pakistan'){cocirculation.dat = get.cocirculation.ref('Pakistan')}
-    if(Countries.out[cc] == 'Nigeria'){cocirculation.dat = get.cocirculation.ref('Nigeria')}
+    if(Countries.out[cc] == 'China'){cocirculation.dat = get.cocirculation.ref('China', region.in[cc])}
+    if(Countries.out[cc] == 'Egypt'){cocirculation.dat = get.cocirculation.ref('Egypt', region.in[cc])}
+    if(Countries.out[cc] == 'Indonesia'){cocirculation.dat = get.cocirculation.ref('Indonesia', region.in[cc])}
+    if(Countries.out[cc] == 'Cambodia'){cocirculation.dat = get.cocirculation.ref('Cambodia', region.in[cc])}
+    if(Countries.out[cc] == 'Vietnam'){cocirculation.dat = get.cocirculation.ref('Vietnam', region.in[cc])}
+    if(Countries.out[cc] == 'Thailand'){cocirculation.dat = get.cocirculation.ref('Thailand', region.in[cc])}
+    if(Countries.out[cc] == 'USA'){cocirculation.dat = get.cocirculation.ref('USA', region.in[cc])}
+    if(Countries.out[cc] == 'UK'){cocirculation.dat = get.cocirculation.ref('UK', region.in[cc])}
+    if(Countries.out[cc] == 'Turkey'){cocirculation.dat = get.cocirculation.ref('Turkey', region.in[cc])}
+    if(Countries.out[cc] == 'Iraq'){cocirculation.dat = get.cocirculation.ref('Iraq', region.in[cc])}
+    if(Countries.out[cc] == 'Azerbaijan'){cocirculation.dat = get.cocirculation.ref('Azerbaijan', region.in[cc])}
+    if(Countries.out[cc] == 'Pakistan'){cocirculation.dat = get.cocirculation.ref('Pakistan', region.in[cc])}
+    if(Countries.out[cc] == 'Nigeria'){cocirculation.dat = get.cocirculation.ref('Nigeria', region.in[cc])}
+    if(Countries.out[cc] == 'Austria'){cocirculation.dat = get.cocirculation.ref('Austria', region.in[cc])}
+    if(Countries.out[cc] == 'Belguim'){cocirculation.dat = get.cocirculation.ref('Belgium', region.in[cc])}
+    if(Countries.out[cc] == 'Denmark'){cocirculation.dat = get.cocirculation.ref('Denmark', region.in[cc])}
+    if(Countries.out[cc] == 'Estonia'){cocirculation.dat = get.cocirculation.ref('Estonia', region.in[cc])}
+    if(Countries.out[cc] == 'Greece'){cocirculation.dat = get.cocirculation.ref('Greece', region.in[cc])}
+    if(Countries.out[cc] == 'Norway'){cocirculation.dat = get.cocirculation.ref('Norway', region.in[cc])}
+    if(Countries.out[cc] == 'Australia'){cocirculation.dat = get.cocirculation.ref('Australia', region.in[cc])}
+    if(Countries.out[cc] == 'Poland'){cocirculation.dat = get.cocirculation.ref('Poland', region.in[cc])}
+    if(Countries.out[cc] == 'Portugal'){cocirculation.dat = get.cocirculation.ref('Portugal', region.in[cc])}
+    if(Countries.out[cc] == 'Spain'){cocirculation.dat = get.cocirculation.ref('Spain', region.in[cc])}
+    if(Countries.out[cc] == 'Argentina'){cocirculation.dat = get.cocirculation.ref('Argentina', region.in[cc])}
+    if(Countries.out[cc] == 'Peru'){cocirculation.dat = get.cocirculation.ref('Peru', region.in[cc])}
+    if(Countries.out[cc] == 'Chile'){cocirculation.dat = get.cocirculation.ref('Chile', region.in[cc])}
+    if(Countries.out[cc] == 'Germany'){cocirculation.dat = get.cocirculation.ref('Germany', region.in[cc])}
+    if(Countries.out[cc] == 'Japan'){cocirculation.dat = get.cocirculation.ref('Japan', region.in[cc])}
+    # Note: Austria, Denmark, Estonia, Greece, Norway and Belgium seem to have tested for H3 at all from 1997-2017, so I've set all their sampling numbers to 0 and we will substitute data from other European countries
 
     
      
@@ -64,7 +82,7 @@ get.type.weights.AB = function(years.out, Countries.out, type = 5){
 
 ## Calculate e_ij, prob of any infection in a given year given birth in year i
 #Output a vector of probabilities of being first infected in any year, j given birth in year i
-source('gete_ij_2017.R')
+source('~/Dropbox/R/Reconstructions/gete_ij_2017.R')
 
 ### This function fills in a matrix of exposure weights (equations 2 and 3 in manuscript), for each year of reference
 # This function is a wrapper for  function get.e_ij

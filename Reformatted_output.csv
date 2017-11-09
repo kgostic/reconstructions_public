@@ -1,325 +1,177 @@
 "","c1","c2","c3","c4"
-"1","Argentina",1997,"H1",13
-"2","Argentina",1997,"H1p09",0
-"3","Argentina",1997,"H3",0
-"4","Argentina",1997,"A",13
-"5","Argentina",1998,"H1",0
-"6","Argentina",1998,"H1p09",0
-"7","Argentina",1998,"H3",0
-"8","Argentina",1998,"A",0
-"9","Argentina",1999,"H1",27
-"10","Argentina",1999,"H1p09",0
-"11","Argentina",1999,"H3",151
-"12","Argentina",1999,"A",178
-"13","Argentina",2000,"H1",76
-"14","Argentina",2000,"H1p09",0
-"15","Argentina",2000,"H3",0
-"16","Argentina",2000,"A",76
-"17","Argentina",2001,"H1",1
-"18","Argentina",2001,"H1p09",0
-"19","Argentina",2001,"H3",403
-"20","Argentina",2001,"A",404
-"21","Argentina",2002,"H1",16
-"22","Argentina",2002,"H1p09",0
-"23","Argentina",2002,"H3",7
-"24","Argentina",2002,"A",23
-"25","Argentina",2003,"H1",264
-"26","Argentina",2003,"H1p09",0
-"27","Argentina",2003,"H3",250
-"28","Argentina",2003,"A",514
-"29","Argentina",2004,"H1",0
-"30","Argentina",2004,"H1p09",0
-"31","Argentina",2004,"H3",352
-"32","Argentina",2004,"A",352
-"33","Argentina",2005,"H1",0
-"34","Argentina",2005,"H1p09",0
-"35","Argentina",2005,"H3",436
-"36","Argentina",2005,"A",436
-"37","Argentina",2006,"H1",256
-"38","Argentina",2006,"H1p09",0
-"39","Argentina",2006,"H3",25
-"40","Argentina",2006,"A",281
-"41","Argentina",2007,"H1",0
-"42","Argentina",2007,"H1p09",0
-"43","Argentina",2007,"H3",321
-"44","Argentina",2007,"A",321
-"45","Argentina",2008,"H1",20
-"46","Argentina",2008,"H1p09",0
-"47","Argentina",2008,"H3",0
-"48","Argentina",2008,"A",20
-"49","Argentina",2009,"H1",77
-"50","Argentina",2009,"H1p09",9514
-"51","Argentina",2009,"H3",17
-"52","Argentina",2009,"A",9608
-"53","Argentina",2010,"H1",1
-"54","Argentina",2010,"H1p09",35
-"55","Argentina",2010,"H3",142
-"56","Argentina",2010,"A",178
-"57","Argentina",2011,"H1",0
-"58","Argentina",2011,"H1p09",244
-"59","Argentina",2011,"H3",865
-"60","Argentina",2011,"A",1109
-"61","Argentina",2012,"H1",0
-"62","Argentina",2012,"H1p09",535
-"63","Argentina",2012,"H3",248
-"64","Argentina",2012,"A",783
-"65","Argentina",2013,"H1",0
-"66","Argentina",2013,"H1p09",3142
-"67","Argentina",2013,"H3",1033
-"68","Argentina",2013,"A",4175
-"69","Argentina",2014,"H1",0
-"70","Argentina",2014,"H1p09",16
-"71","Argentina",2014,"H3",1120
-"72","Argentina",2014,"A",1136
-"73","Argentina",2015,"H1",0
-"74","Argentina",2015,"H1p09",190
-"75","Argentina",2015,"H3",1056
-"76","Argentina",2015,"A",1246
-"77","Argentina",2016,"H1",0
-"78","Argentina",2016,"H1p09",4093
-"79","Argentina",2016,"H3",32
-"80","Argentina",2016,"A",4125
-"81","Argentina",2017,"H1",0
-"82","Argentina",2017,"H1p09",4
-"83","Argentina",2017,"H3",2605
-"84","Argentina",2017,"A",2609
-"85","Chile",1997,"H1",3
-"86","Chile",1997,"H1p09",0
-"87","Chile",1997,"H3",0
-"88","Chile",1997,"A",3
-"89","Chile",1998,"H1",3
-"90","Chile",1998,"H1p09",0
-"91","Chile",1998,"H3",0
-"92","Chile",1998,"A",3
-"93","Chile",1999,"H1",1
-"94","Chile",1999,"H1p09",0
-"95","Chile",1999,"H3",33
-"96","Chile",1999,"A",34
-"97","Chile",2000,"H1",151
-"98","Chile",2000,"H1p09",0
-"99","Chile",2000,"H3",3
-"100","Chile",2000,"A",154
-"101","Chile",2001,"H1",4
-"102","Chile",2001,"H1p09",0
-"103","Chile",2001,"H3",245
-"104","Chile",2001,"A",249
-"105","Chile",2002,"H1",105
-"106","Chile",2002,"H1p09",0
-"107","Chile",2002,"H3",0
-"108","Chile",2002,"A",105
-"109","Chile",2003,"H1",2
-"110","Chile",2003,"H1p09",0
-"111","Chile",2003,"H3",316
-"112","Chile",2003,"A",318
-"113","Chile",2004,"H1",0
-"114","Chile",2004,"H1p09",0
-"115","Chile",2004,"H3",478
-"116","Chile",2004,"A",478
-"117","Chile",2005,"H1",0
-"118","Chile",2005,"H1p09",0
-"119","Chile",2005,"H3",468
-"120","Chile",2005,"A",468
-"121","Chile",2006,"H1",150
-"122","Chile",2006,"H1p09",0
-"123","Chile",2006,"H3",192
-"124","Chile",2006,"A",342
-"125","Chile",2007,"H1",7
-"126","Chile",2007,"H1p09",0
-"127","Chile",2007,"H3",310
-"128","Chile",2007,"A",317
-"129","Chile",2008,"H1",394
-"130","Chile",2008,"H1p09",0
-"131","Chile",2008,"H3",0
-"132","Chile",2008,"A",394
-"133","Chile",2009,"H1",11
-"134","Chile",2009,"H1p09",3896
-"135","Chile",2009,"H3",21
-"136","Chile",2009,"A",3928
-"137","Chile",2010,"H1",0
-"138","Chile",2010,"H1p09",612
-"139","Chile",2010,"H3",1881
-"140","Chile",2010,"A",2493
-"141","Chile",2011,"H1",0
-"142","Chile",2011,"H1p09",820
-"143","Chile",2011,"H3",256
-"144","Chile",2011,"A",1076
-"145","Chile",2012,"H1",0
-"146","Chile",2012,"H1p09",11
-"147","Chile",2012,"H3",1274
-"148","Chile",2012,"A",1285
-"149","Chile",2013,"H1",0
-"150","Chile",2013,"H1p09",1368
-"151","Chile",2013,"H3",488
-"152","Chile",2013,"A",1856
-"153","Chile",2014,"H1",0
-"154","Chile",2014,"H1p09",16
-"155","Chile",2014,"H3",1368
-"156","Chile",2014,"A",1384
-"157","Chile",2015,"H1",0
-"158","Chile",2015,"H1p09",954
-"159","Chile",2015,"H3",677
-"160","Chile",2015,"A",1631
-"161","Chile",2016,"H1",0
-"162","Chile",2016,"H1p09",1892
-"163","Chile",2016,"H3",584
-"164","Chile",2016,"A",2476
-"165","Chile",2017,"H1",0
-"166","Chile",2017,"H1p09",0
-"167","Chile",2017,"H3",1848
-"168","Chile",2017,"A",1848
-"169","Peru",2000,"H1",0
-"170","Peru",2000,"H1p09",0
-"171","Peru",2000,"H3",0
-"172","Peru",2000,"A",0
-"173","Peru",2001,"H1",0
-"174","Peru",2001,"H1p09",0
-"175","Peru",2001,"H3",0
-"176","Peru",2001,"A",0
-"177","Peru",2002,"H1",86
-"178","Peru",2002,"H1p09",0
-"179","Peru",2002,"H3",213
-"180","Peru",2002,"A",299
-"181","Peru",2003,"H1",47
-"182","Peru",2003,"H1p09",0
-"183","Peru",2003,"H3",85
-"184","Peru",2003,"A",132
-"185","Peru",2004,"H1",78
-"186","Peru",2004,"H1p09",0
-"187","Peru",2004,"H3",66
-"188","Peru",2004,"A",144
-"189","Peru",2005,"H1",145
-"190","Peru",2005,"H1p09",0
-"191","Peru",2005,"H3",42
-"192","Peru",2005,"A",187
-"193","Peru",2006,"H1",2
-"194","Peru",2006,"H1p09",0
-"195","Peru",2006,"H3",1
-"196","Peru",2006,"A",3
-"197","Peru",2007,"H1",0
-"198","Peru",2007,"H1p09",0
-"199","Peru",2007,"H3",0
-"200","Peru",2007,"A",0
-"201","Peru",2008,"H1",2
-"202","Peru",2008,"H1p09",0
-"203","Peru",2008,"H3",0
-"204","Peru",2008,"A",2
-"205","Peru",2009,"H1",40
-"206","Peru",2009,"H1p09",0
-"207","Peru",2009,"H3",0
-"208","Peru",2009,"A",40
-"209","Peru",2010,"H1",0
-"210","Peru",2010,"H1p09",611
-"211","Peru",2010,"H3",0
-"212","Peru",2010,"A",611
-"213","Peru",2011,"H1",0
-"214","Peru",2011,"H1p09",55
-"215","Peru",2011,"H3",225
-"216","Peru",2011,"A",280
-"217","Peru",2012,"H1",0
-"218","Peru",2012,"H1p09",40
-"219","Peru",2012,"H3",83
-"220","Peru",2012,"A",123
-"221","Peru",2013,"H1",0
-"222","Peru",2013,"H1p09",1370
-"223","Peru",2013,"H3",186
-"224","Peru",2013,"A",1556
-"225","Peru",2014,"H1",0
-"226","Peru",2014,"H1p09",174
-"227","Peru",2014,"H3",235
-"228","Peru",2014,"A",409
-"229","Peru",2015,"H1",0
-"230","Peru",2015,"H1p09",109
-"231","Peru",2015,"H3",235
-"232","Peru",2015,"A",344
-"233","Peru",2016,"H1",0
-"234","Peru",2016,"H1p09",562
-"235","Peru",2016,"H3",115
-"236","Peru",2016,"A",677
-"237","Peru",2017,"H1",0
-"238","Peru",2017,"H1p09",8
-"239","Peru",2017,"H3",117
-"240","Peru",2017,"A",125
-"241","United Kingdom of Great Britain and Northern Ireland",1997,"H1",21
-"242","United Kingdom of Great Britain and Northern Ireland",1997,"H1p09",0
-"243","United Kingdom of Great Britain and Northern Ireland",1997,"H3",375
-"244","United Kingdom of Great Britain and Northern Ireland",1997,"A",396
-"245","United Kingdom of Great Britain and Northern Ireland",1998,"H1",201
-"246","United Kingdom of Great Britain and Northern Ireland",1998,"H1p09",0
-"247","United Kingdom of Great Britain and Northern Ireland",1998,"H3",560
-"248","United Kingdom of Great Britain and Northern Ireland",1998,"A",761
-"249","United Kingdom of Great Britain and Northern Ireland",1999,"H1",1
-"250","United Kingdom of Great Britain and Northern Ireland",1999,"H1p09",0
-"251","United Kingdom of Great Britain and Northern Ireland",1999,"H3",986
-"252","United Kingdom of Great Britain and Northern Ireland",1999,"A",987
-"253","United Kingdom of Great Britain and Northern Ireland",2000,"H1",63
-"254","United Kingdom of Great Britain and Northern Ireland",2000,"H1p09",0
-"255","United Kingdom of Great Britain and Northern Ireland",2000,"H3",250
-"256","United Kingdom of Great Britain and Northern Ireland",2000,"A",313
-"257","United Kingdom of Great Britain and Northern Ireland",2001,"H1",268
-"258","United Kingdom of Great Britain and Northern Ireland",2001,"H1p09",0
-"259","United Kingdom of Great Britain and Northern Ireland",2001,"H3",18
-"260","United Kingdom of Great Britain and Northern Ireland",2001,"A",286
-"261","United Kingdom of Great Britain and Northern Ireland",2002,"H1",1
-"262","United Kingdom of Great Britain and Northern Ireland",2002,"H1p09",0
-"263","United Kingdom of Great Britain and Northern Ireland",2002,"H3",57
-"264","United Kingdom of Great Britain and Northern Ireland",2002,"A",58
-"265","United Kingdom of Great Britain and Northern Ireland",2003,"H1",29
-"266","United Kingdom of Great Britain and Northern Ireland",2003,"H1p09",0
-"267","United Kingdom of Great Britain and Northern Ireland",2003,"H3",1549
-"268","United Kingdom of Great Britain and Northern Ireland",2003,"A",1578
-"269","United Kingdom of Great Britain and Northern Ireland",2004,"H1",35
-"270","United Kingdom of Great Britain and Northern Ireland",2004,"H1p09",0
-"271","United Kingdom of Great Britain and Northern Ireland",2004,"H3",279
-"272","United Kingdom of Great Britain and Northern Ireland",2004,"A",314
-"273","United Kingdom of Great Britain and Northern Ireland",2005,"H1",126
-"274","United Kingdom of Great Britain and Northern Ireland",2005,"H1p09",0
-"275","United Kingdom of Great Britain and Northern Ireland",2005,"H3",656
-"276","United Kingdom of Great Britain and Northern Ireland",2005,"A",782
-"277","United Kingdom of Great Britain and Northern Ireland",2006,"H1",112
-"278","United Kingdom of Great Britain and Northern Ireland",2006,"H1p09",0
-"279","United Kingdom of Great Britain and Northern Ireland",2006,"H3",95
-"280","United Kingdom of Great Britain and Northern Ireland",2006,"A",207
-"281","United Kingdom of Great Britain and Northern Ireland",2007,"H1",198
-"282","United Kingdom of Great Britain and Northern Ireland",2007,"H1p09",0
-"283","United Kingdom of Great Britain and Northern Ireland",2007,"H3",848
-"284","United Kingdom of Great Britain and Northern Ireland",2007,"A",1046
-"285","United Kingdom of Great Britain and Northern Ireland",2008,"H1",439
-"286","United Kingdom of Great Britain and Northern Ireland",2008,"H1p09",0
-"287","United Kingdom of Great Britain and Northern Ireland",2008,"H3",842
-"288","United Kingdom of Great Britain and Northern Ireland",2008,"A",1281
-"289","United Kingdom of Great Britain and Northern Ireland",2009,"H1",50
-"290","United Kingdom of Great Britain and Northern Ireland",2009,"H1p09",3192
-"291","United Kingdom of Great Britain and Northern Ireland",2009,"H3",425
-"292","United Kingdom of Great Britain and Northern Ireland",2009,"A",3667
-"293","United Kingdom of Great Britain and Northern Ireland",2010,"H1",0
-"294","United Kingdom of Great Britain and Northern Ireland",2010,"H1p09",2021
-"295","United Kingdom of Great Britain and Northern Ireland",2010,"H3",26
-"296","United Kingdom of Great Britain and Northern Ireland",2010,"A",2047
-"297","United Kingdom of Great Britain and Northern Ireland",2011,"H1",0
-"298","United Kingdom of Great Britain and Northern Ireland",2011,"H1p09",1690
-"299","United Kingdom of Great Britain and Northern Ireland",2011,"H3",85
-"300","United Kingdom of Great Britain and Northern Ireland",2011,"A",1775
-"301","United Kingdom of Great Britain and Northern Ireland",2012,"H1",0
-"302","United Kingdom of Great Britain and Northern Ireland",2012,"H1p09",77
-"303","United Kingdom of Great Britain and Northern Ireland",2012,"H3",1707
-"304","United Kingdom of Great Britain and Northern Ireland",2012,"A",1784
-"305","United Kingdom of Great Britain and Northern Ireland",2013,"H1",0
-"306","United Kingdom of Great Britain and Northern Ireland",2013,"H1p09",595
-"307","United Kingdom of Great Britain and Northern Ireland",2013,"H3",2054
-"308","United Kingdom of Great Britain and Northern Ireland",2013,"A",2649
-"309","United Kingdom of Great Britain and Northern Ireland",2014,"H1",0
-"310","United Kingdom of Great Britain and Northern Ireland",2014,"H1p09",1965
-"311","United Kingdom of Great Britain and Northern Ireland",2014,"H3",789
-"312","United Kingdom of Great Britain and Northern Ireland",2014,"A",2754
-"313","United Kingdom of Great Britain and Northern Ireland",2015,"H1",0
-"314","United Kingdom of Great Britain and Northern Ireland",2015,"H1p09",657
-"315","United Kingdom of Great Britain and Northern Ireland",2015,"H3",5314
-"316","United Kingdom of Great Britain and Northern Ireland",2015,"A",5971
-"317","United Kingdom of Great Britain and Northern Ireland",2016,"H1",0
-"318","United Kingdom of Great Britain and Northern Ireland",2016,"H1p09",3599
-"319","United Kingdom of Great Britain and Northern Ireland",2016,"H3",1263
-"320","United Kingdom of Great Britain and Northern Ireland",2016,"A",4862
-"321","United Kingdom of Great Britain and Northern Ireland",2017,"H1",0
-"322","United Kingdom of Great Britain and Northern Ireland",2017,"H1p09",20
-"323","United Kingdom of Great Britain and Northern Ireland",2017,"H3",3041
-"324","United Kingdom of Great Britain and Northern Ireland",2017,"A",3061
+"1","Germany",1996,"H1",0
+"2","Germany",1996,"H1p09",0
+"3","Germany",1996,"H3",2
+"4","Germany",1996,"A",2
+"5","Germany",1997,"H1",10
+"6","Germany",1997,"H1p09",0
+"7","Germany",1997,"H3",246
+"8","Germany",1997,"A",256
+"9","Germany",1998,"H1",26
+"10","Germany",1998,"H1p09",0
+"11","Germany",1998,"H3",817
+"12","Germany",1998,"A",843
+"13","Germany",1999,"H1",0
+"14","Germany",1999,"H1p09",0
+"15","Germany",1999,"H3",2017
+"16","Germany",1999,"A",2017
+"17","Germany",2000,"H1",117
+"18","Germany",2000,"H1p09",0
+"19","Germany",2000,"H3",1616
+"20","Germany",2000,"A",1733
+"21","Germany",2001,"H1",1540
+"22","Germany",2001,"H1p09",0
+"23","Germany",2001,"H3",8
+"24","Germany",2001,"A",1548
+"25","Germany",2002,"H1",0
+"26","Germany",2002,"H1p09",0
+"27","Germany",2002,"H3",414
+"28","Germany",2002,"A",414
+"29","Germany",2003,"H1",1
+"30","Germany",2003,"H1p09",0
+"31","Germany",2003,"H3",1375
+"32","Germany",2003,"A",1376
+"33","Germany",2004,"H1",0
+"34","Germany",2004,"H1p09",0
+"35","Germany",2004,"H3",287
+"36","Germany",2004,"A",287
+"37","Germany",2005,"H1",213
+"38","Germany",2005,"H1p09",0
+"39","Germany",2005,"H3",799
+"40","Germany",2005,"A",1012
+"41","Germany",2006,"H1",22
+"42","Germany",2006,"H1p09",0
+"43","Germany",2006,"H3",108
+"44","Germany",2006,"A",130
+"45","Germany",2007,"H1",131
+"46","Germany",2007,"H1p09",0
+"47","Germany",2007,"H3",1163
+"48","Germany",2007,"A",1294
+"49","Germany",2008,"H1",9
+"50","Germany",2008,"H1p09",0
+"51","Germany",2008,"H3",119
+"52","Germany",2008,"A",128
+"53","Germany",2009,"H1",109
+"54","Germany",2009,"H1p09",1771
+"55","Germany",2009,"H3",1133
+"56","Germany",2009,"A",3013
+"57","Germany",2010,"H1",0
+"58","Germany",2010,"H1p09",146
+"59","Germany",2010,"H3",6
+"60","Germany",2010,"A",152
+"61","Germany",2011,"H1",0
+"62","Germany",2011,"H1p09",1103
+"63","Germany",2011,"H3",20
+"64","Germany",2011,"A",1123
+"65","Germany",2012,"H1",0
+"66","Germany",2012,"H1p09",36
+"67","Germany",2012,"H3",553
+"68","Germany",2012,"A",589
+"69","Germany",2013,"H1",1
+"70","Germany",2013,"H1p09",612
+"71","Germany",2013,"H3",546
+"72","Germany",2013,"A",1159
+"73","Germany",2014,"H1",0
+"74","Germany",2014,"H1p09",118
+"75","Germany",2014,"H3",266
+"76","Germany",2014,"A",384
+"77","Germany",2015,"H1",0
+"78","Germany",2015,"H1p09",580
+"79","Germany",2015,"H3",2146
+"80","Germany",2015,"A",2726
+"81","Germany",2016,"H1",0
+"82","Germany",2016,"H1p09",582
+"83","Germany",2016,"H3",186
+"84","Germany",2016,"A",768
+"85","Germany",2017,"H1",0
+"86","Germany",2017,"H1p09",16
+"87","Germany",2017,"H3",1273
+"88","Germany",2017,"A",1289
+"89","Japan",1996,"H1",0
+"90","Japan",1996,"H1p09",0
+"91","Japan",1996,"H3",1412
+"92","Japan",1996,"A",1412
+"93","Japan",1997,"H1",0
+"94","Japan",1997,"H1p09",0
+"95","Japan",1997,"H3",1736
+"96","Japan",1997,"A",1736
+"97","Japan",1998,"H1",6
+"98","Japan",1998,"H1p09",0
+"99","Japan",1998,"H3",938
+"100","Japan",1998,"A",944
+"101","Japan",1999,"H1",570
+"102","Japan",1999,"H1p09",0
+"103","Japan",1999,"H3",4819
+"104","Japan",1999,"A",5389
+"105","Japan",2000,"H1",3904
+"106","Japan",2000,"H1p09",0
+"107","Japan",2000,"H3",2127
+"108","Japan",2000,"A",6031
+"109","Japan",2001,"H1",1922
+"110","Japan",2001,"H1p09",0
+"111","Japan",2001,"H3",870
+"112","Japan",2001,"A",2792
+"113","Japan",2002,"H1",3182
+"114","Japan",2002,"H1p09",0
+"115","Japan",2002,"H3",4192
+"116","Japan",2002,"A",7374
+"117","Japan",2003,"H1",4
+"118","Japan",2003,"H1p09",0
+"119","Japan",2003,"H3",4021
+"120","Japan",2003,"A",4025
+"121","Japan",2004,"H1",71
+"122","Japan",2004,"H1p09",0
+"123","Japan",2004,"H3",4477
+"124","Japan",2004,"A",4548
+"125","Japan",2005,"H1",250
+"126","Japan",2005,"H1p09",0
+"127","Japan",2005,"H3",3022
+"128","Japan",2005,"A",3272
+"129","Japan",2006,"H1",1214
+"130","Japan",2006,"H1p09",0
+"131","Japan",2006,"H3",2850
+"132","Japan",2006,"A",4064
+"133","Japan",2007,"H1",1975
+"134","Japan",2007,"H1p09",0
+"135","Japan",2007,"H3",2378
+"136","Japan",2007,"A",4353
+"137","Japan",2008,"H1",2982
+"138","Japan",2008,"H1p09",0
+"139","Japan",2008,"H3",921
+"140","Japan",2008,"A",3903
+"141","Japan",2009,"H1",3035
+"142","Japan",2009,"H1p09",28324
+"143","Japan",2009,"H3",2158
+"144","Japan",2009,"A",33517
+"145","Japan",2010,"H1",0
+"146","Japan",2010,"H1p09",4436
+"147","Japan",2010,"H3",1281
+"148","Japan",2010,"A",5717
+"149","Japan",2011,"H1",0
+"150","Japan",2011,"H1p09",5244
+"151","Japan",2011,"H3",3529
+"152","Japan",2011,"A",8773
+"153","Japan",2012,"H1",0
+"154","Japan",2012,"H1p09",39
+"155","Japan",2012,"H3",5081
+"156","Japan",2012,"A",5120
+"157","Japan",2013,"H1",0
+"158","Japan",2013,"H1p09",317
+"159","Japan",2013,"H3",4673
+"160","Japan",2013,"A",4990
+"161","Japan",2014,"H1",0
+"162","Japan",2014,"H1p09",3329
+"163","Japan",2014,"H3",3400
+"164","Japan",2014,"A",6729
+"165","Japan",2015,"H1",0
+"166","Japan",2015,"H1p09",512
+"167","Japan",2015,"H3",3335
+"168","Japan",2015,"A",3847
+"169","Japan",2016,"H1",0
+"170","Japan",2016,"H1p09",8412
+"171","Japan",2016,"H3",2645
+"172","Japan",2016,"A",11057
+"173","Japan",2017,"H1",0
+"174","Japan",2017,"H1p09",291
+"175","Japan",2017,"H3",5448
+"176","Japan",2017,"A",5739

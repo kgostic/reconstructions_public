@@ -3,7 +3,7 @@ rm(list = ls())
 setwd('~/Dropbox/R/Reconstructions/')
 
 ## Load data
-raw = read.csv('~/Dropbox/R/Reconstructions/Argentina_Chile_Peru_UK_cocirculation.csv', skip = 3, stringsAsFactors = FALSE)
+raw = read.csv('~/Dropbox/R/Reconstructions/Japan_Germany_cocirculation.csv', skip = 3, stringsAsFactors = FALSE)
 
 
 

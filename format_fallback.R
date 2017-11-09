@@ -1,7 +1,8 @@
 dat = read.csv('CocirculationData.csv', stringsAsFactors = FALSE)
 
 # Extract data from European countries
-valid = subset(dat, Country %in% c('Austria', 'Belgium', 'Denmark', 'Estonia', 'Greece', 'Norway', 'Poland', 'Portugal', 'Spain'))
+valid = subset(dat, Country %in% c('Austria', 'Belgium', 'Denmark', 'Estonia', 'Greece', 'Norway', 'Poland', 'Portugal', 'Spain', 'Germany'))
+#valid = subset(dat, Country %in% c('Bangladesh', 'Cambodia', 'China', 'Indonesia', 'Thailand', 'Vietnam', 'Japan'))
 
 # Initalize
 yrs = 1997:2017
