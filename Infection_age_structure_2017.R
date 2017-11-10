@@ -66,7 +66,7 @@ get.type.weights.AB = function(years.out, Countries.out, type = 5, region.in = '
     if(Countries.out[cc] == 'Chile'){cocirculation.dat = get.cocirculation.ref('Chile', region.in[cc])}
     if(Countries.out[cc] == 'Germany'){cocirculation.dat = get.cocirculation.ref('Germany', region.in[cc])}
     if(Countries.out[cc] == 'Japan'){cocirculation.dat = get.cocirculation.ref('Japan', region.in[cc])}
-    # Note: Austria, Denmark, Estonia, Greece, Norway and Belgium seem to have tested for H3 at all from 1997-2017, so I've set all their sampling numbers to 0 and we will substitute data from other European countries
+    if(Countries.out[cc] == 'Singapore'){cocirculation.dat = get.cocirculation.ref('Singapore', region.in[cc])}
 
     
      
