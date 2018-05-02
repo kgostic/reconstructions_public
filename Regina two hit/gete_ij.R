@@ -1,3 +1,8 @@
+setwd("/Users/reginalee/Desktop/Research/")
+#TIP: press TAB for setwd()
+#Check that you set your working directory correctly
+getwd()
+
 ## Note - Intensitymaster.csv contains data loaded into this function
 
 ## Function inputs the year in which an individual was born (birth.year), and in which the individual became infected with bird flu (incidence year)
@@ -11,15 +16,15 @@
 get.e_ij = function(birth.year, incidence.year){
   ## Inputs
   #Load saved data on intensity of influenza circulation in specific years of first infection
-  intensities = read.csv('~/Dropbox/R/2017_Branching_HA_Imprinting/Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:2017
-  load('~/Dropbox/R/Reconstructions/pest.RData') # Load the annual probability of first infection, estimated from serological data (see two papers by Sauerbrei et al.)
+  intensities = read.csv('Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:2017
+  load('pest.RData') # Load the annual probability of first infection, estimated from serological data (see two papers by Sauerbrei et al.)
+  #TIP: save results as lists in Rdata file, check when workspace is empty
   
   # Weighted attack rate = annual prob infection weighted by circulation intensity
   weighted.attack.rate = p.est*(intensities$Intensity); names(weighted.attack.rate) = 1911:2017
   
   ## Calculations
-  jjs = birth.year:min(birth.year+12, incidence.year) #Possible years of first infection (ages 0-12)
-  
+  jjs = birth.year:min(birth.year+17, incidence.year) #Possible years of first infection (ages 0-12)
   nn = length(jjs) # How many possible years of infection?
   ajs = weighted.attack.rate[as.character(jjs)] #Get weighted attack rates corresponding to possible years of first infection
   #names(e_ij) = jjs; names(naiive) = jjs
@@ -30,7 +35,7 @@ get.e_ij = function(birth.year, incidence.year){
   diag(ii) = 1
   #Fill in sub-diagonal for all the years since birth in which the individual escaped infection
   not_ii[lower.tri(not_ii)] = 1
-  # Below, multiplying across rows of this matrix will calculate overall probability of first infection at different ages (see equation 3 in the supplement of the Science paper)
+  # Below, multiplying across rows of this matix will calculate overall probability of first infection at different ages (see equation 3 in the supplement of the Science paper)
 
   #Create a matrix that takes (1-aj) for all non-infection years and aj for all infection years
   prod.mat = ajs*ii+matrix(rep(1-ajs, nn), nn, nn, byrow = T)*not_ii

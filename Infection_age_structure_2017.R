@@ -141,3 +141,6 @@ if(type == 5){return(list(weights.master.1, weights.master.2, weights.master.3, 
 }
 
 
+## Test
+#wts = get.type.weights.AB(years.out = c(1997, 2003:2017), Countries.out = c('China', 'Cambodia', 'Egypt', 'Indonesia', 'Vietnam', 'Thailand'), type = 5)
+
