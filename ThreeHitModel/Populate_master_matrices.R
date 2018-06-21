@@ -2,9 +2,9 @@
 ### Load results from ""
 ### TAKES SEVERAL MINUTES TO RUN. LOAD SAVED RESULTS IF POSSIBLE.
 ### Code at the bottom plots the reconstruction outputs.
-setwd('~/Dropbox/R/Reconstructions/TwoHitModel/')
+setwd('~/Dropbox/R/Reconstructions/ThreeHitModel/')
 source('country_data_import.R')
-source('compute_proportion_matrices.R')
+source('compute_proportion_matrices_threehit.R')
 
 # 1. To calculate outputs for each country and year of interest, use get_proportion(b_yr, i_yr, flu_circ)
 #   Note that each time you call this function you will need to import data from each relevant country.
@@ -28,13 +28,15 @@ birth.years = 1918:2017
 # master.Hxp_11 stores probs of 1st and 2nd exposure to Hx
 # master.Hxp_10 stores probs of 1st exposure to Hx, but 2nd exposure to some other subtype
 # ...etc.
-master.H1p_11 = matrix(0, nrow = length(Countries.out)*length(Years.out), ncol = length(birth.years), dimnames = list(paste(rep(Years.out, length(Countries.out)), rep(Countries.out, each = length(Years.out)), sep = ''), rev(birth.years)))
+master.g1p_111 = master.g1p_110 = master.g1p_101 = master.g1p_100 = master.g1p_011 = master.g1p_010 = master.g1p_001 = master.g1p_000 =
+master.g2p_111 = master.g2p_110 = master.g2p_101 = master.g2p_100 = master.g2p_011 = master.g2p_010 = master.g2p_001 = master.g2p_000 =  matrix(0, nrow = length(Countries.out)*length(Years.out), ncol = length(birth.years), dimnames = list(paste(rep(Years.out, length(Countries.out)), rep(Countries.out, each = length(Years.out)), sep = ''), rev(birth.years)))
 
-master.H1p_10 = master.H1p_01 = master.H1p_00 = master.H2p_11 = master.H2p_11 = master.H2p_10 = master.H2p_01 = master.H2p_00 = master.H3p_11 = master.H3p_10 = master.H3p_01 = master.H3p_00 = master.H1p_1n = master.H1p_0n = master.H2p_1n = master.H2p_0n = master.H3p_1n = master.H3p_0n = master.p_nn = master.g1p_11 = master.g1p_10 = master.g1p_01 = master.g1p_00 = master.g1p_1n = master.g1p_0n = master.H1p_11 
+# aster.H1p_111 = master.H1p_110 = master.H1p_101 = master.H1p_100 = master.H1p_011 = master.H1p_010 = master.H1p_001 = master.H1p_000 =
+#   master.H2p_111 = master.H2p_110 = master.H2p_101 = master.H2p_100 = master.H2p_011 = master.H2p_010 = master.H2p_001 = master.H2p_000 =
+#   master.H3p_111 = master.H3p_110 = master.H3p_101 = master.H3p_100 = master.H3p_011 = master.H3p_010 = master.H3p_001 = master.H3p_000 = 
 
 ######################################################################################
 # 2.b Fill in the master matrices:
-
 for(cc in Countries.out){ # COUNTRY LOOP
   # Call the cocirculation data from the country of interest
   flu_circ_input = import.country.dat(cc)
@@ -47,130 +49,89 @@ for(cc in Countries.out){ # COUNTRY LOOP
       }
       
       # Output probs of every possible 2-hit combo for H1N1, H2N2 and H3N2 exposures
-      LISTofall = c(get_proportion(b_yr = bb, i_yr = yy, flu_circ_input))
+      LISTofall = c(partition_to_subtype(b_yr = bb, i_yr = yy, flu_circ_input))
       
       
       ## Fill in the master matrices initialized above
       row.string = paste(yy, cc, sep = '') # This will yield a string, e.g. "2013Vietnam". Use that string to call the named row of the master matrix below.
       
       # Fill in correct row and column of each output matrix by taking the sum of the relevant probabilities
-      master.H1p_11[row.string, as.character(bb)] = sum(LISTofall$H1p_11, na.rm = TRUE)
-      master.H1p_10[row.string, as.character(bb)] = sum(LISTofall$H1p_10, na.rm = TRUE)
-      master.H1p_01[row.string, as.character(bb)] = sum(LISTofall$H1p_01, na.rm = TRUE)
-      master.H1p_00[row.string, as.character(bb)] = sum(LISTofall$H1p_00, na.rm = TRUE)
-      master.H1p_1n[row.string, as.character(bb)] = sum(LISTofall$H1p_1n, na.rm = TRUE) 
-      master.H1p_0n[row.string, as.character(bb)] = sum(LISTofall$H1p_0n, na.rm = TRUE) 
-      
-      master.H2p_11[row.string, as.character(bb)] = sum(LISTofall$H2p_11, na.rm = TRUE)
-      master.H2p_10[row.string, as.character(bb)] = sum(LISTofall$H2p_10, na.rm = TRUE)
-      master.H2p_01[row.string, as.character(bb)] = sum(LISTofall$H2p_01, na.rm = TRUE)
-      master.H2p_00[row.string, as.character(bb)] = sum(LISTofall$H2p_00, na.rm = TRUE)
-      master.H2p_1n[row.string, as.character(bb)] = sum(LISTofall$H2p_1n, na.rm = TRUE) 
-      master.H2p_0n[row.string, as.character(bb)] = sum(LISTofall$H2p_0n, na.rm = TRUE) 
-      
-      master.H3p_11[row.string, as.character(bb)] = sum(LISTofall$H3p_11, na.rm = TRUE)
-      master.H3p_10[row.string, as.character(bb)] = sum(LISTofall$H3p_10, na.rm = TRUE)
-      master.H3p_01[row.string, as.character(bb)] = sum(LISTofall$H3p_01, na.rm = TRUE)
-      master.H3p_00[row.string, as.character(bb)] = sum(LISTofall$H3p_00, na.rm = TRUE)
-      master.H3p_1n[row.string, as.character(bb)] = sum(LISTofall$H3p_1n, na.rm = TRUE) 
-      master.H3p_0n[row.string, as.character(bb)] = sum(LISTofall$H3p_0n, na.rm = TRUE) 
-      
-      master.g1p_11[row.string, as.character(bb)] = sum(LISTofall$g1p_11, na.rm = TRUE)
-      master.g1p_10[row.string, as.character(bb)] = sum(LISTofall$g1p_10, na.rm = TRUE)
-      master.g1p_01[row.string, as.character(bb)] = sum(LISTofall$g1p_01, na.rm = TRUE)
-      master.g1p_00[row.string, as.character(bb)] = sum(LISTofall$g1p_00, na.rm = TRUE)
-      master.g1p_1n[row.string, as.character(bb)] = sum(LISTofall$g1p_1n, na.rm = TRUE) 
-      master.g1p_0n[row.string, as.character(bb)] = sum(LISTofall$g1p_0n, na.rm = TRUE) 
-      
-      
-      master.g1p_11[row.string, as.character(bb)] = sum(LISTofall$g1p_11, na.rm = TRUE)
-      master.g1p_10[row.string, as.character(bb)] = sum(LISTofall$g1p_10, na.rm = TRUE)
-      master.g1p_01[row.string, as.character(bb)] = sum(LISTofall$g1p_01, na.rm = TRUE)
-      master.g1p_00[row.string, as.character(bb)] = sum(LISTofall$g1p_00, na.rm = TRUE)
-      master.g1p_1n[row.string, as.character(bb)] = sum(LISTofall$g1p_1n, na.rm = TRUE) 
-      master.g1p_0n[row.string, as.character(bb)] = sum(LISTofall$g1p_0n, na.rm = TRUE) 
-      
-      master.g2p_11 = master.H3p_11
-      master.g2p_10 = master.H3p_10
-      master.g2p_01 = master.H3p_01
-      master.g2p_00 = master.H3p_00
-      master.g2p_1n = master.H3p_1n
-      master.g2p_0n = master.H3p_0n
+      master.g1p_111[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H1 + LISTofall$H1_H1_H2 + LISTofall$H1_H2_H1 + LISTofall$H1_H2_H2 + LISTofall$H2_H1_H1 + LISTofall$H2_H1_H2 + LISTofall$H2_H2_H1 + LISTofall$H2_H2_H2, na.rm = TRUE)
+      master.g1p_110[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H3 + LISTofall$H1_H2_H3 + LISTofall$H2_H1_H3 + LISTofall$H2_H2_H3 + LISTofall$H1_H1_n + LISTofall$H1_H2_n + LISTofall$H2_H1_n + LISTofall$H2_H2_n, na.rm = TRUE)
+      master.g1p_101[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H1 + LISTofall$H1_H3_H2 + LISTofall$H2_H3_H1 + LISTofall$H2_H3_H2, na.rm = TRUE)
+      master.g1p_100[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H3 + LISTofall$H1_H3_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H1_n_n + LISTofall$H2_n_n, na.rm = TRUE)
+      master.g1p_011[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H1 + LISTofall$H3_H1_H2 + LISTofall$H3_H2_H1 + LISTofall$H3_H2_H2, na.rm = TRUE)
+      master.g1p_010[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H3 + LISTofall$H3_H1_n + LISTofall$H3_H2_n + LISTofall$H3_H2_n, na.rm = TRUE)
+      master.g1p_001[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H1 + LISTofall$H3_H3_H2, na.rm = TRUE)
+      master.g1p_000[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n, na.rm = TRUE)
+      #(master.g1p_111 + master.g1p_110 + master.g1p_101 + master.g1p_100 + master.g1p_011 + master.g1p_010 + master.g1p_001 + master.g1p_000)[row.string, as.character(bb)]
 
-      master.p_nn[row.string, as.character(bb)] = sum(LISTofall$p_nn, na.rm = TRUE) 
+      
+      master.g2p_000[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H1 + LISTofall$H1_H1_H2 + LISTofall$H1_H2_H1 + LISTofall$H1_H2_H2 + LISTofall$H2_H1_H1 + LISTofall$H2_H1_H2 + LISTofall$H2_H2_H1 + LISTofall$H2_H2_H2, na.rm = TRUE)
+      master.g2p_001[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H3 + LISTofall$H1_H2_H3 + LISTofall$H2_H1_H3 + LISTofall$H2_H2_H3 + LISTofall$H1_H1_n + LISTofall$H1_H2_n + LISTofall$H2_H1_n + LISTofall$H2_H2_n, na.rm = TRUE)
+      master.g2p_010[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H1 + LISTofall$H1_H3_H2 + LISTofall$H2_H3_H1 + LISTofall$H2_H3_H2, na.rm = TRUE)
+      master.g2p_011[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H3 + LISTofall$H1_H3_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H1_n_n + LISTofall$H2_n_n, na.rm = TRUE)
+      master.g2p_100[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H1 + LISTofall$H3_H1_H2 + LISTofall$H3_H2_H1 + LISTofall$H3_H2_H2, na.rm = TRUE)
+      master.g2p_101[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H3 + LISTofall$H3_H1_n + LISTofall$H3_H2_n + LISTofall$H3_H2_n, na.rm = TRUE)
+      master.g2p_110[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H1 + LISTofall$H3_H3_H2, na.rm = TRUE)
+      master.g2p_111[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n, na.rm = TRUE)
+      
+      
+      # ## H1N1 specific
+      # master.H1p_111[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H1, na.rm = TRUE)
+      # master.H1p_110[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H3 + LISTofall$H1_H1_H2 + LISTofall$H1_H1_n, na.rm = TRUE)
+      # master.H1p_101[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H1 + LISTofall$H1_H2_H1, na.rm = TRUE)
+      # master.H1p_100[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H3 + LISTofall$H1_H3_n + LISTofall$H1_n_n + LISTofall$H1_H2_H2 + LISTofall$H1_H2_H3 +  LISTofall$H1_H3_H2 + LISTofall$H1_H2_n, na.rm = TRUE)
+      # master.H1p_011[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H1 + LISTofall$H2_H1_H1, na.rm = TRUE)
+      # master.H1p_010[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H3 + LISTofall$H3_H1_n +  LISTofall$H2_H1_H2 + LISTofall$H2_H1_H3 + LISTofall$H2_H1_n +  LISTofall$H3_H1_H2, na.rm = TRUE)
+      # master.H1p_001[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H1 + LISTofall$H2_H2_H1 + LISTofall$H2_H3_H1 +  LISTofall$H3_H2_H1, na.rm = TRUE)
+      # 
+      # master.H1p_000[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n + LISTofall$H2_H2_H2 + LISTofall$H2_H2_H3 +  LISTofall$H2_H2_n + LISTofall$H2_H3_H2 + LISTofall$H2_n_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H3_H2_H2 + LISTofall$H3_H2_n + LISTofall$H3_H2_n + LISTofall$H3_H3_H2, na.rm = TRUE)
+      # (master.H1p_111 + master.H1p_110 + master.H1p_101 + master.H1p_100 + master.H1p_011 + master.H1p_010 + master.H1p_001 + master.H1p_000)[row.string, as.character(bb)]
+      
+      
+         
+      
+      
+      
     } # CLOSE BIRTH YEAR LOOP
   }# CLOSE INCIDENCE YEAR LOOP
 } # CLOSE COUNTRY LOOP
 
 
 
-save(list = grep(pattern = "master.\\w+_\\w+", ls(), value = TRUE), file = "Two_hit_weights.RData")
+save(list = grep(pattern = "master.\\w+_\\w+", ls(), value = TRUE), file = "Three_hit_weights.RData")
 
 
 ## check
-pdf('~/Dropbox/R/2018_TwoHitModel/Twohit_reconstructions.pdf', height = 15)
-par(mfrow = c(5,1))
-xx = barplot(rbind(colSums(master.g1p_11, na.rm = TRUE),
-              colSums(master.g1p_10, na.rm = TRUE),
-              colSums(master.g1p_01, na.rm = TRUE),
-              colSums(master.g1p_00, na.rm = TRUE),
-              colSums(master.g1p_1n, na.rm = TRUE),
-              colSums(master.g1p_0n, na.rm = TRUE),
-              colSums(master.p_nn, na.rm = TRUE)),
+pdf('~/Dropbox/R/2018_ThreeHitModel/Twohit_reconstructions.pdf', height = 15)
+par(mfrow = c(2,1))
+xx = barplot(rbind(colSums(master.g1p_111, na.rm = TRUE),
+              colSums(master.g1p_110, na.rm = TRUE),
+              colSums(master.g1p_101, na.rm = TRUE),
+              colSums(master.g1p_011, na.rm = TRUE),
+              colSums(master.g1p_100, na.rm = TRUE),
+              colSums(master.g1p_010, na.rm = TRUE),
+              colSums(master.g1p_001, na.rm = TRUE),
+              colSums(master.g1p_000, na.rm = TRUE)),
               main = 'Group 1', 
-              col = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), border = NA, space = 0)
+              col = c('navy', 'royalblue', 'blue2', 'lightblue', 'green', 'limegreen', 'lightgreen', 'orange'), border = NA, space = 0)
 #lines(xx, apply(X = master.g1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topright', fill = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), legend = c('11', '10', '01', '00', '1n', '0n', 'nn'), cex = 1, bg = 'white')
-
-
-xx = barplot(rbind(colSums(master.H1p_11, na.rm = TRUE),
-                   colSums(master.H1p_10, na.rm = TRUE),
-                   colSums(master.H1p_01, na.rm = TRUE),
-                   colSums(master.H1p_00, na.rm = TRUE),
-                   colSums(master.H1p_1n, na.rm = TRUE),
-                   colSums(master.H1p_0n, na.rm = TRUE),
-                   colSums(master.p_nn, na.rm = TRUE)),
-             main = 'H1N1', 
-             col = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), border = NA, space = 0)
-#lines(xx, apply(X = master.H1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topright', fill = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), legend = c('11', '10', '01', '00', '1n', '0n', 'nn'), cex = 1, bg = 'white')
-
-xx = barplot(rbind(colSums(master.H2p_11, na.rm = TRUE),
-                   colSums(master.H2p_10, na.rm = TRUE),
-                   colSums(master.H2p_01, na.rm = TRUE),
-                   colSums(master.H2p_00, na.rm = TRUE),
-                   colSums(master.H2p_1n, na.rm = TRUE),
-                   colSums(master.H2p_0n, na.rm = TRUE),
-                   colSums(master.p_nn, na.rm = TRUE)),
-             main = 'H2N2', 
-             col = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), border = NA, space = 0)
-#lines(xx, apply(X = master.H1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topright', fill = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), legend = c('11', '10', '01', '00', '1n', '0n', 'nn'), cex = 1, bg = 'white')
+legend('topleft', fill = c('navy', 'royalblue', 'blue2', 'lightblue', 'green', 'limegreen', 'lightgreen', 'orange'), legend = c('111', '110', '101', '011', '100', '101', '001', '000'), cex = 1, bg = 'white')
 
 
 
-xx = barplot(rbind(colSums(master.H3p_11, na.rm = TRUE),
-                   colSums(master.H3p_10, na.rm = TRUE),
-                   colSums(master.H3p_01, na.rm = TRUE),
-                   colSums(master.H3p_00, na.rm = TRUE),
-                   colSums(master.H3p_1n, na.rm = TRUE),
-                   colSums(master.H3p_0n, na.rm = TRUE),
-                   colSums(master.p_nn, na.rm = TRUE)),
-             main = 'H3N2', 
-             col = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), border = NA, space = 0)
-#lines(xx, apply(X = master.H1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topright', fill = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), legend = c('11', '10', '01', '00', '1n', '0n', 'nn'), cex = 1, bg = 'white')
+xx = barplot(rbind(colSums(master.g2p_111, na.rm = TRUE),
+                   colSums(master.g2p_110, na.rm = TRUE),
+                   colSums(master.g2p_101, na.rm = TRUE),
+                   colSums(master.g2p_011, na.rm = TRUE),
+                   colSums(master.g2p_100, na.rm = TRUE),
+                   colSums(master.g2p_010, na.rm = TRUE),
+                   colSums(master.g2p_001, na.rm = TRUE),
+                   colSums(master.g2p_000, na.rm = TRUE)),
+             main = 'Group 1', 
+             col = c('firebrick4', 'firebrick1', 'brown1', 'deeppink', 'orange', 'goldenrod1', 'khaki1', 'blue'), border = NA, space = 0)
+#lines(xx, apply(X = master.g1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
+legend('topleft', fill = c('firebrick4', 'firebrick1', 'brown1', 'deeppink', 'orange', 'goldenrod1', 'khaki1', 'blue'), legend = c('111', '110', '101', '011', '100', '101', '001', '000'), cex = 1, bg = 'white')
 
-
-xx = barplot(rbind(colSums(master.g2p_11, na.rm = TRUE),
-                   colSums(master.g2p_10, na.rm = TRUE),
-                   colSums(master.g2p_01, na.rm = TRUE),
-                   colSums(master.g2p_00, na.rm = TRUE),
-                   colSums(master.g2p_1n, na.rm = TRUE),
-                   colSums(master.g2p_0n, na.rm = TRUE),
-                   colSums(master.p_nn, na.rm = TRUE)),
-             main = 'Group 2', 
-             col = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), border = NA, space = 0)
-#lines(xx, apply(X = master.H1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topright', fill = c('royalblue', 'slateblue4', 'mediumpurple1', 'orange', 'steelblue1', 'gray41', 'gray63'), legend = c('11', '10', '01', '00', '1n', '0n', 'nn'), cex = 1, bg = 'white')
 dev.off()
