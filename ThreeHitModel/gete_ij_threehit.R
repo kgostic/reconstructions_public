@@ -1,0 +1,121 @@
+## Function inputs the year in which an individual was born (birth.year), and in which the individual became infected with bird flu (incidence year)
+
+## Function outputs a matrix of probabilities, the first representing the probability of first flu infection in the first year of life (age 0), the second representing the probability of first flu infection in the second year of life (age 1), and so on up to the 18th year of life (age 17)
+# Output a list, where the first entry gives the original total matrix, the second entry gives the total prob of having no first exposure and the third entry gives the total prob of a first exposure, but no second exposure.
+
+## Function is called by another script which calculates normalized probabilities (see denominators in equations 3 and 4), and calculates probability of first exposure to a specific HA subtype.
+
+get.e_ij = function(birth.year, incidence.year){
+  ## Inputs
+  #Load saved data on intensity of influenza circulation in specific years of first infection
+  intensities = read.csv('~/Dropbox/R/Reconstructions/Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:2017
+ 
+  # Weighted attack rate = annual prob infection scaled by historical data on year-specific circulation intensity (from Intensitymaster.csv)
+  weighted.attack.rate = 0.28*(intensities$Intensity); names(weighted.attack.rate) = 1911:2017
+  
+  ## Calculations (vector, constant, vector)
+  jjs = birth.year:min(birth.year+25, incidence.year) #Possible years of first, second and third infection (ages 0-25)
+  ajs = weighted.attack.rate[as.character(jjs)] #Get weighted attack rates "p" corresponding to possible years of first infection
+  
+  nn = length(jjs) # Number of possible years of 1st inf.
+  
+  
+  ## Initilaize storage
+  ## total[i,j,k] gives the probability of having a first exposure in year i, a second exposure in year j, and a third exposure in year k
+  one.hit = vector(mode = 'numeric', length = nn)
+  two.hit = array(data = 0, dim = c(nn, nn))
+  three.hit = array(data = 0, dim = c(nn, nn, nn))
+  
+  ####--Calculate one-hit probs--####
+  for(exp1 in 1:nn){
+    if(exp1 == 1){
+      wait.to.first = 1 # If no wait to first exposure, just multiply by 1
+    }else{
+      wait.to.first = prod((1-ajs)[1:(exp1-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
+    }
+    one.hit[exp1] = wait.to.first*ajs[exp1]
+  }
+  sum(one.hit, na.rm = TRUE)
+  
+  
+####--Calculate two-hit probs--####
+  for(exp1 in 1:(nn-1)){
+    if(exp1 == 1){
+      wait.to.first = 1 # If no wait to first exposure, just multiply by 1
+    }else{
+      wait.to.first = prod((1-ajs)[1:(exp1-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
+    }
+    
+    for(exp2 in (exp1+1):(nn)){
+      if(exp2 == exp1+1){
+        wait.to.second = 1 # If no wait to first exposure, just multiply by 1
+      }else{
+        wait.to.second = prod((1-ajs)[(exp1+1):(exp2-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
+      }
+      
+      two.hit[exp1, exp2] = wait.to.first*ajs[exp1]*wait.to.second*ajs[exp2]
+    }
+  }
+  sum(two.hit, na.rm = TRUE)
+  
+  
+  
+
+####--Calculate three-hit probs--####
+  for(exp1 in 1:(nn-2)){
+    if(exp1 == 1){
+    wait.to.first = 1 # If no wait to first exposure, just multiply by 1
+    }else{
+    wait.to.first = prod((1-ajs)[1:(exp1-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
+    }
+    
+    for(exp2 in min((exp1+1), nn):(nn-1)){
+      if(exp2 == exp1+1){
+        wait.to.second = 1 # If no wait to first exposure, just multiply by 1
+      }else{
+        wait.to.second = prod((1-ajs)[(exp1+1):(exp2-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
+      }
+      
+      for(exp3 in min((exp2+1), nn):nn){
+        if(exp3 == exp2+1){
+          wait.to.third = 1 # If no wait to first exposure, just multiply by 1
+        }else{
+          wait.to.third = prod((1-ajs)[(exp2+1):(exp3-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
+        }
+        
+         three.hit[exp1, exp2, exp3] = wait.to.first*ajs[exp1]*wait.to.second*ajs[exp2]*wait.to.third*ajs[exp3]
+      }
+    }
+  }
+sum(three.hit, na.rm = TRUE)
+
+## Calculate naive fractions
+p_noexp1 = 1-sum(one.hit) # Scalar
+p_exp1_noexp2 = one.hit-rowSums(two.hit, na.rm = T) # Vector, entries indicate year of 1st exposure
+p_exp1_exp2_noexp3 = two.hit - rowSums(three.hit, na.rm = T, dims = 2) # Matrix, entries indicate years of first and second exposure
+
+return(list('one.hit' = one.hit, 'two.hit' = two.hit, 'three.hit' = three.hit, 'naivex3' = p_noexp1, 'naivex2' = p_exp1_noexp2, 'naivex1' = p_exp1_exp2_noexp3))
+} # End function
+
+
+# ## check:
+get.e_ij(1990, 2017)
+test = get.e_ij(1990, 2017)
+sum(test$one.hit)
+sum(test$two.hit)
+sum(test$three.hit)
+sum(test$naivex1)
+sum(test$naivex2)
+sum(test$naivex3)
+sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
+
+
+test = get.e_ij(2000, 2009)
+# Sum should equal 1
+sum(test$one.hit)
+sum(test$two.hit)
+sum(test$three.hit)
+sum(test$naivex1)
+sum(test$naivex2)
+sum(test$naivex3)
+sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)

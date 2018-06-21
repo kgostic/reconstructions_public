@@ -8,7 +8,7 @@
 get.e_ij = function(birth.year, incidence.year){
   ## Inputs
   #Load saved data on intensity of influenza circulation in specific years of first infection
-  intensities = read.csv('../Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:2017
+  intensities = read.csv('~/Dropbox/R/Reconstructions/Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:2017
  # load('pest.RData') # Load the annual probability of first infection, estimated from serological data (see two papers by Sauerbrei et al.)
 
   # Weighted attack rate = annual prob infection scaled by historical data on year-specific circulation intensity (from Intensitymaster.csv)

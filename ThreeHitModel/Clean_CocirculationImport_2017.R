@@ -1,7 +1,7 @@
 ## Cleaned up cocirculation import
 
 ## Import master spreadsheet
-cocirculation = read.csv('../CocirculationData.csv', header = TRUE)
+cocirculation = read.csv('CocirculationData.csv', header = TRUE)
 years = as.character(seq(1997, 2017))
 source('get.country.cocirculation.data_2017.R')
 
