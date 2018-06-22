@@ -48,13 +48,13 @@ partition_to_subtype = function(b_yr, i_yr, circ_history){
   } # Else, assume some individuals are still missing an first, second or third exposure, and calculate the naive fraction below
   
   # List of subtypes that circulated in each year since 1918. 1 = H1N1, 2 = H2N2, 3 = H3N3, 4 = naive
-  if(naive.possible == TRUE){
-    # Include naive
-    valid.exp.types = apply(rbind(circ_history[1:3, ], rep(1, ncol(circ_history))), MARGIN = 2, FUN = function(xx) which(xx>0)) 
-  }else{
-    # Don't include naive as a possibility
+  # if(naive.possible == TRUE){
+  #   # Include naive
+  #   valid.exp.types = apply(rbind(circ_history[1:3, ], rep(1, ncol(circ_history))), MARGIN = 2, FUN = function(xx) which(xx>0)) 
+  # }else{
+  #   # Don't include naive as a possibility
     valid.exp.types = apply(circ_history[1:3, ], MARGIN = 2, FUN = function(xx) which(xx>0))
-  }
+  # }
   
   
   ## Initialize master list of all possible combinations of exp1, exp2, exp3
@@ -68,6 +68,9 @@ partition_to_subtype = function(b_yr, i_yr, circ_history){
   }
 
   
+  ### First, track everyone with all three exposures.
+  ### This is only possible if nn >= 3
+  if(nn >= 3){
   for(exp1 in 1:(nn-2)){ # FOR EACH YEAR OF 1st EXPOSURE
       for(exp2 in (exp1+1):(nn-1)){ # AND FOR EACH YEAR OF 2ND EXPOSURE
         for(exp3 in (exp2+1):nn){ # AND FOR EACH YEAR OF 3rd EXPOSURE
@@ -80,70 +83,78 @@ partition_to_subtype = function(b_yr, i_yr, circ_history){
           for(i2 in pos.e2){
             for(i3 in pos.e3){
             ## Partition by subtype
-            if( (i1 == 4 & (i2 != 4 | i3 !=4)) | (i2 == 4 & i3 !=4)){
-              # Combinations in which a valid exposure follows a naive exposure
-              # are not biologically possible 
-              # (e.g. can't have a 3rd exposure if you don't yet have a 2nd)
-              # Skip these cases
-            }else{
             valid = which(lindex[1,] == i1 & lindex[2,] == i2 & lindex[3,]  == i3) #Which list element to fill in?
             f1 = circ_history[i1, as.character(b_yr+exp1-1)] # Fraction of circulation in year of 1st exposure caused by subtype i1
             f2 = circ_history[i2, as.character(b_yr+exp2-1)] # Fraction of circulation in year of 2nd exposure caused by subtype i2
             f3 = circ_history[i3, as.character(b_yr+exp3-1)] # Fraction of circulation in year of 2nd exposure caused by subtype i2
-            if(i1 == 4){ # Look in estimates of naive probs if i1 or i2 = 4, which corresponds to no exposure
-              outlist[[valid]][exp1, exp2, exp3] = naivex3/(nn*(nn-1)*(nn-2)/6) # Divide the total prob of no exp evenly across the lower triangle of the matrix.
-            }else if(i2 == 4){ # If one exposure, but no second or third,
-              mm = nn-exp1
-              outlist[[valid]][exp1, exp2, exp3] = naivex2[exp1]*f1/((mm-1)*mm/2)
-            }else if(i3 == 4){
-              mm = nn-exp2
-              outlist[[valid]][exp1, exp2, exp3] = naivex1[exp1, exp2]*f1*f2/mm
-              }else{
               outlist[[valid]][exp1, exp2, exp3] = three.hit[exp1, exp2, exp3]*f1*f2*f3
-              }
-            }
            }  # Close loop over possible exp3 subtypes
           } # Close loop over possible exp2 subtypes
         } # Close loop over possible exp1 subtypes
       } # Close loop over years of 3rd exposure
      } # Close loop over years of 2nd exposure
     } # Close loop over years of 1st exposure
-  
+  } # Close loop over if
+    
+    
+    
+    
+    # if(i1 == 4){ # Look in estimates of naive probs if i1 or i2 = 4, which corresponds to no exposure
+    #   outlist[[valid]][exp1, exp2, exp3] = naivex3/(nn*(nn-1)*(nn-2)/6) # Divide the total prob of no exp evenly across the lower triangle of the matrix.
+    # }else if(i2 == 4){ # If one exposure, but no second or third,
+    #   mm = nn-exp1
+    #   outlist[[valid]][exp1, exp2, exp3] = naivex2[exp1]*f1/((mm-1)*mm/2)
+    # }else if(i3 == 4){
+    #   mm = nn-exp2
+    #   outlist[[valid]][exp1, exp2, exp3] = naivex1[exp1, exp2]*f1*f2/mm
+    # }else
+    
+    
   if(naive.possible == TRUE){
-    # account for second exposures that happened in the last possible year
-    for(exp1 in 1:(nn-1)){ # FOR EACH YEAR OF 1st EXPOSURE
-      exp2 = nn
+    # Keep track of everyone that has exp1 and exp2 but lacks exp3
+    # this is only possible if nn >= 2
+    if(nn >= 2){
+      for(exp1 in 1:(nn-1)){ # FOR EACH YEAR OF 1st EXPOSURE
+        for(exp2 in (exp1+1):(nn)){ # AND FOR EACH YEAR OF 2ND EXPOSURE
+          exp3 = nn # dummy setting
+            # Extract possible subtypes causing the first and 2nd exposure, given the year of 1st and 2nd exposure indicated by our position in the loop
+            pos.e1 = valid.exp.types[[as.character(b_yr+exp1-1)]]
+            pos.e2 = valid.exp.types[[as.character(b_yr+exp2-1)]]
+            # Loop over possible exposure types
+            for(i1 in pos.e1){
+              for(i2 in pos.e2){
+                  ## Partition by subtype
+                  valid = which(lindex[1,] == i1 & lindex[2,] == i2 & lindex[3,]  == 4) #Which list element to fill in?
+                  f1 = circ_history[i1, as.character(b_yr+exp1-1)] # Fraction of circulation in year of 1st exposure caused by subtype i1
+                  f2 = circ_history[i2, as.character(b_yr+exp2-1)] # Fraction of circulation in year of 2nd exposure caused by subtype i2
+                  outlist[[valid]][exp1, exp2, exp3] = naivex1[exp1, exp2]*f1*f2
+              } # Close loop over possible exp2 subtypes
+            } # Close loop over possible exp1 subtypes
+        } # Close loop over years of 2nd exposure
+      } # Close loop over years of 1st exposure
+    } # Close if
+    
+    
+    # Keep track of everyone that has exp1 but lacks exp2 and exp3
+      for(exp1 in 1:(nn)){ # FOR EACH YEAR OF 1st EXPOSURE
+          exp2 = nn # dummy setting. Exp2 and 3 haven't actually happened, but we need to store them somewhere
+          exp3 = nn # dummy setting
+          # Extract possible subtypes causing the first and 2nd exposure, given the year of 1st and 2nd exposure indicated by our position in the loop
           pos.e1 = valid.exp.types[[as.character(b_yr+exp1-1)]]
-          pos.e2 = valid.exp.types[[as.character(b_yr+exp2-1)]]
           # Loop over possible exposure types
           for(i1 in pos.e1){
-            if(i1 == 4){ # skip this
-            }else{
-            for(i2 in pos.e2){
-              if(i2 == 4){
-                # skip
-              }else{
-              i3 == 4
-              valid = which(lindex[1,] == i1 & lindex[2,] == i2 & lindex[3,]  == 4) #Which list element to fill in?
+              ## Partition by subtype
+              valid = which(lindex[1,] == i1 & lindex[2,] == 4 & lindex[3,]  == 4) #Which list element to fill in?
               f1 = circ_history[i1, as.character(b_yr+exp1-1)] # Fraction of circulation in year of 1st exposure caused by subtype i1
-              f2 = circ_history[i2, as.character(b_yr+exp2-1)] # Fraction of circulation in year of 2nd exposure caused by subtype i2
-              outlist[[valid]][exp1, exp2, nn] = naivex1[exp1, exp2]*f1*f2
-            }}}}}
-    #account for first exposures that happened in the last or penultimate possible year, assuming only one exposure happenend
-    for(exp1 in nn-1:0){ # FOR EACH YEAR OF 1st EXPOSURE
-      exp2 = nn
-      exp3 = nn
-      pos.e1 = valid.exp.types[[as.character(b_yr+exp1-1)]]
-      # Loop over possible exposure types
-      for(i1 in pos.e1){
-        if(i1 == 4){ # skip this
-        }else{
-          i2 = i3 = 4
-          valid = which(lindex[1,] == i1 & lindex[2,] == i2 & lindex[3,]  == 4) #Which list element to fill in?
-          f1 = circ_history[i1, as.character(b_yr+exp1-1)] # Fraction of circulation in year of 1st exposure caused by subtype i1
-          outlist[[valid]][exp1, nn, nn] = naivex2[exp1]*f1
-        }}}
-    }
+              outlist[[valid]][exp1, exp2, exp3] = naivex2[exp1]*f1
+          } # Close loop over possible exp1 subtypes
+      } # Close loop over years of 1st exposure
+
+    # Keep track of everyone that is totally naive
+    valid = which(lindex[1,] == 4 & lindex[2,] == 4 & lindex[3,]  == 4) #Which list element to fill in?
+    outlist[[valid]][nn, nn, nn] = naivex3
+    
+  }#Close if naive.possible == TRUE
     
  return(outlist)
 }
@@ -162,9 +173,9 @@ sum(sapply(out, sum)) ## All categories should sum to 1
 
 
 ## Test when naive individuals should be included
-out = partition_to_subtype(b_yr = 2000, i_yr = 2012, circ_history = circ_history)
+out = partition_to_subtype(b_yr = 2011, i_yr = 2012, circ_history = circ_history)
 sapply(out, sum) ## For a birth year of 1957, only H2H2H2, H2H2H3, H2H2H1, H2H3H3, H2H3H1, H2H1H1, H1H1H1, H3H3H3 should be nonzero
-raw = get.e_ij(birth.year = 2000, incidence.year = 2012)
+raw = get.e_ij(birth.year = 2011, incidence.year = 2012)
 # No exposures, should be equal
 raw$naivex3    
 sum(out$n_n_n)

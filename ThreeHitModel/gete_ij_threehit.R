@@ -35,10 +35,11 @@ get.e_ij = function(birth.year, incidence.year){
     }
     one.hit[exp1] = wait.to.first*ajs[exp1]
   }
-  sum(one.hit, na.rm = TRUE)
+  #sum(one.hit, na.rm = TRUE)
   
   
 ####--Calculate two-hit probs--####
+  if(nn >= 2){
   for(exp1 in 1:(nn-1)){
     if(exp1 == 1){
       wait.to.first = 1 # If no wait to first exposure, just multiply by 1
@@ -56,12 +57,14 @@ get.e_ij = function(birth.year, incidence.year){
       two.hit[exp1, exp2] = wait.to.first*ajs[exp1]*wait.to.second*ajs[exp2]
     }
   }
-  sum(two.hit, na.rm = TRUE)
+  }
+  #sum(two.hit, na.rm = TRUE)
   
   
   
 
 ####--Calculate three-hit probs--####
+  if(nn >= 3){
   for(exp1 in 1:(nn-2)){
     if(exp1 == 1){
     wait.to.first = 1 # If no wait to first exposure, just multiply by 1
@@ -69,25 +72,26 @@ get.e_ij = function(birth.year, incidence.year){
     wait.to.first = prod((1-ajs)[1:(exp1-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
     }
     
-    for(exp2 in min((exp1+1), nn):(nn-1)){
+    for(exp2 in (exp1+1):(nn-1)){
       if(exp2 == exp1+1){
         wait.to.second = 1 # If no wait to first exposure, just multiply by 1
       }else{
         wait.to.second = prod((1-ajs)[(exp1+1):(exp2-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
       }
       
-      for(exp3 in min((exp2+1), nn):nn){
+      for(exp3 in (exp2+1):nn){
         if(exp3 == exp2+1){
           wait.to.third = 1 # If no wait to first exposure, just multiply by 1
         }else{
           wait.to.third = prod((1-ajs)[(exp2+1):(exp3-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
         }
+      }
         
          three.hit[exp1, exp2, exp3] = wait.to.first*ajs[exp1]*wait.to.second*ajs[exp2]*wait.to.third*ajs[exp3]
       }
     }
   }
-sum(three.hit, na.rm = TRUE)
+#sum(three.hit, na.rm = TRUE)
 
 ## Calculate naive fractions
 p_noexp1 = 1-sum(one.hit) # Scalar
@@ -97,25 +101,25 @@ p_exp1_exp2_noexp3 = two.hit - rowSums(three.hit, na.rm = T, dims = 2) # Matrix,
 return(list('one.hit' = one.hit, 'two.hit' = two.hit, 'three.hit' = three.hit, 'naivex3' = p_noexp1, 'naivex2' = p_exp1_noexp2, 'naivex1' = p_exp1_exp2_noexp3))
 } # End function
 
-
-# ## check:
-get.e_ij(1990, 2017)
-test = get.e_ij(1990, 2017)
-sum(test$one.hit)
-sum(test$two.hit)
-sum(test$three.hit)
-sum(test$naivex1)
-sum(test$naivex2)
-sum(test$naivex3)
-sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
-
-
-test = get.e_ij(2000, 2009)
-# Sum should equal 1
-sum(test$one.hit)
-sum(test$two.hit)
-sum(test$three.hit)
-sum(test$naivex1)
-sum(test$naivex2)
-sum(test$naivex3)
-sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
+# 
+# # ## check:
+# get.e_ij(1990, 2017)
+# test = get.e_ij(1990, 2017)
+# sum(test$one.hit)
+# sum(test$two.hit)
+# sum(test$three.hit)
+# sum(test$naivex1)
+# sum(test$naivex2)
+# sum(test$naivex3)
+# sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
+# 
+# 
+# test = get.e_ij(2008, 2009)
+# # Sum should equal 1
+# sum(test$one.hit)
+# sum(test$two.hit)
+# sum(test$three.hit)
+# sum(test$naivex1)
+# sum(test$naivex2)
+# sum(test$naivex3)
+# sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)

@@ -14,8 +14,8 @@ source('compute_proportion_matrices_threehit.R')
 # 2. Once you are able to use the pseudocode script to output H1p_11, H1p_10, ... etc., we can start filling in the master matrices.
 #   Note that we have data from 1997, and 2003:2017, and from China, Cambodia, Egypt, Indonesia, Vietnam and Thailand. Set:
 Countries.out = c('China', 'Cambodia', 'Egypt', 'Indonesia', 'Vietnam', 'Thailand')
-Years.out = as.integer(c(1997, 2003:2017))
-#Years.out = as.integer(2011)
+#Years.out = as.integer(c(1997, 2003:2017))
+Years.out = as.integer(2011)
 #
 # We also care about birth years from 1918:2017
 birth.years = 1918:2017
@@ -88,11 +88,6 @@ for(cc in Countries.out){ # COUNTRY LOOP
       # 
       # master.H1p_000[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n + LISTofall$H2_H2_H2 + LISTofall$H2_H2_H3 +  LISTofall$H2_H2_n + LISTofall$H2_H3_H2 + LISTofall$H2_n_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H3_H2_H2 + LISTofall$H3_H2_n + LISTofall$H3_H2_n + LISTofall$H3_H3_H2, na.rm = TRUE)
       # (master.H1p_111 + master.H1p_110 + master.H1p_101 + master.H1p_100 + master.H1p_011 + master.H1p_010 + master.H1p_001 + master.H1p_000)[row.string, as.character(bb)]
-      
-      
-         
-      
-      
       
     } # CLOSE BIRTH YEAR LOOP
   }# CLOSE INCIDENCE YEAR LOOP
