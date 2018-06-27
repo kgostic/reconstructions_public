@@ -14,8 +14,9 @@ source('compute_proportion_matrices_threehit.R')
 # 2. Once you are able to use the pseudocode script to output H1p_11, H1p_10, ... etc., we can start filling in the master matrices.
 #   Note that we have data from 1997, and 2003:2017, and from China, Cambodia, Egypt, Indonesia, Vietnam and Thailand. Set:
 Countries.out = c('China', 'Cambodia', 'Egypt', 'Indonesia', 'Vietnam', 'Thailand')
-#Years.out = as.integer(c(1997, 2003:2017))
-Years.out = as.integer(2011)
+#Countries.out = 'China'
+Years.out = as.integer(c(1997, 2003:2017))
+#Years.out = as.integer(2011)
 #
 # We also care about birth years from 1918:2017
 birth.years = 1918:2017
@@ -99,7 +100,7 @@ save(list = grep(pattern = "master.\\w+_\\w+", ls(), value = TRUE), file = "Thre
 
 
 ## check
-pdf('~/Dropbox/R/2018_ThreeHitModel/Twohit_reconstructions.pdf', height = 15)
+pdf('Threehit_reconstructions.pdf')
 par(mfrow = c(2,1))
 xx = barplot(rbind(colSums(master.g1p_111, na.rm = TRUE),
               colSums(master.g1p_110, na.rm = TRUE),
@@ -112,7 +113,7 @@ xx = barplot(rbind(colSums(master.g1p_111, na.rm = TRUE),
               main = 'Group 1', 
               col = c('navy', 'royalblue', 'blue2', 'lightblue', 'green', 'limegreen', 'lightgreen', 'orange'), border = NA, space = 0)
 #lines(xx, apply(X = master.g1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topleft', fill = c('navy', 'royalblue', 'blue2', 'lightblue', 'green', 'limegreen', 'lightgreen', 'orange'), legend = c('111', '110', '101', '011', '100', '101', '001', '000'), cex = 1, bg = 'white')
+legend('topright', fill = c('navy', 'royalblue', 'blue2', 'lightblue', 'green', 'limegreen', 'lightgreen', 'orange'), legend = c('111', '110', '101', '011', '100', '101', '001', '000'), bg = 'white', cex = .7)
 
 
 
@@ -124,9 +125,16 @@ xx = barplot(rbind(colSums(master.g2p_111, na.rm = TRUE),
                    colSums(master.g2p_010, na.rm = TRUE),
                    colSums(master.g2p_001, na.rm = TRUE),
                    colSums(master.g2p_000, na.rm = TRUE)),
-             main = 'Group 1', 
-             col = c('firebrick4', 'firebrick1', 'brown1', 'deeppink', 'orange', 'goldenrod1', 'khaki1', 'blue'), border = NA, space = 0)
+             main = 'Group 2', 
+             col = c('firebrick4', 'red3', 'red', 'tomato', 'khaki1', 'goldenrod1', 'yellow', 'yellow4'), border = NA, space = 0)
 #lines(xx, apply(X = master.g1p_00, MARGIN = 2, FUN = function(ff) sum(!is.na(ff))), col = 'hotpink')
-legend('topleft', fill = c('firebrick4', 'firebrick1', 'brown1', 'deeppink', 'orange', 'goldenrod1', 'khaki1', 'blue'), legend = c('111', '110', '101', '011', '100', '101', '001', '000'), cex = 1, bg = 'white')
+legend('topright', fill = c('firebrick4', 'red3', 'red', 'tomato', 'khaki1', 'goldenrod1', 'yellow', 'yellow4'), legend = c('111', '110', '101', '011', '100', '101', '001', '000'), bg = 'white', cex = .7)
 
 dev.off()
+
+
+## Test
+mget(ls(pattern = "master.g1p_\\d\\d\\d")) -> allg1
+array.sum = function(ll){ll[[1]]+ll[[2]]+ll[[3]]+ll[[4]]+ll[[5]]+ll[[6]]+ll[[7]]+ll[[8]]}
+array.sum(allg1) -> totals
+totals[which(!(round(totals, 5) == 0 | round(totals, 5) == 1))]

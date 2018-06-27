@@ -85,11 +85,12 @@ get.e_ij = function(birth.year, incidence.year){
         }else{
           wait.to.third = prod((1-ajs)[(exp2+1):(exp3-1)]) # Else, multiply across probabilities of no infection for the years prior to first exposure
         }
-      }
         
-         three.hit[exp1, exp2, exp3] = wait.to.first*ajs[exp1]*wait.to.second*ajs[exp2]*wait.to.third*ajs[exp3]
-      }
-    }
+        three.hit[exp1, exp2, exp3] = wait.to.first*ajs[exp1]*wait.to.second*ajs[exp2]*wait.to.third*ajs[exp3]
+        
+      } # Close loop over exp3
+      } # Close loop over exp2 
+    } # Close loop over exp1 
   }
 #sum(three.hit, na.rm = TRUE)
 
@@ -103,15 +104,15 @@ return(list('one.hit' = one.hit, 'two.hit' = two.hit, 'three.hit' = three.hit, '
 
 # 
 # # ## check:
-# get.e_ij(1990, 2017)
-# test = get.e_ij(1990, 2017)
-# sum(test$one.hit)
-# sum(test$two.hit)
-# sum(test$three.hit)
-# sum(test$naivex1)
-# sum(test$naivex2)
-# sum(test$naivex3)
-# sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
+get.e_ij(1990, 2017)
+test = get.e_ij(1990, 2017)
+sum(test$one.hit)
+sum(test$two.hit)
+sum(test$three.hit)
+sum(test$naivex1)
+sum(test$naivex2)
+sum(test$naivex3)
+sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
 # 
 # 
 # test = get.e_ij(2008, 2009)
