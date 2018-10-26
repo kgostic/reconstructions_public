@@ -49,10 +49,8 @@ template['Group2', as.character(2017:1997)] = colSums(template[c('H3'), as.chara
 #    Load fallback data
 #    fallback.data = Thompson.data[1997:2017]
 Asia.fallback = read.csv('Asia_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
-
 Euro.fallback = read.csv('Euro_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
-
-#    Figure out which years are still NA, and replace
+#    Figure out which years are still NA, and replace with fallback data.
 
 if(any(is.na(template['Group1', ]))){
   proxy.years = as.character(2017:1997)[which(is.na(template['Group1', as.character(2017:1997)]))]

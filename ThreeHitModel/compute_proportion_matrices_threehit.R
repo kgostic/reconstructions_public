@@ -166,7 +166,7 @@ partition_to_subtype = function(b_yr, i_yr, circ_history){
 # Test
 setwd('~/Dropbox/R/Reconstructions/')
 source('ThreeHitModel/country_data_import.R')
-circ_history = import.country.dat('Egypt')
+circ_history = import.country.dat('USA')
 out = partition_to_subtype(b_yr = 1957, i_yr = 2000, circ_history = circ_history)
 sapply(out, sum) ## For a birth year of 1957, only H2H2H2, H2H2H3, H2H2H1, H2H3H3, H2H3H1, H2H1H1, H1H1H1, H3H3H3 should be nonzero
 sum(sapply(out, sum)) ## All categories should sum to 1
