@@ -1,9 +1,11 @@
-## Cleaned up cocirculation import
+## Import virological data from 1918:2017 for each country of interest.
+##  Use country-specific data in recent years, where it is publicly available
+##  Use fallback data or single-subtype elsewhere
 
-## Import master spreadsheet
+## Import master spreadsheet containing data on which subtypes circulated historically in particular countries and seasons
 cocirculation = read.csv('CocirculationData.csv', header = TRUE)
-years = as.character(seq(1997, 2017))
-source('~/Dropbox/R/Reconstructions/get.country.cocirculation.data_2017.R')
+years = as.character(seq(1997, 2017)) # Set years of interest. Start in 1997 because this is the earliest country-specific data available from WHO Flu Net.
+source('0func-import-formatted-country-coriculation-data.R')
 
 get.cocirculation.ref = function(Country, region = 'default'){
 ## Output: matrix with years across columns, H1, H2, H3, G1, G2 down rows for 2017:1918
@@ -11,15 +13,17 @@ get.cocirculation.ref = function(Country, region = 'default'){
 ##     Reads and re-formats relevant data from master .csv files saved in directory
 ##     Region: "Asia" takes the average from all Asian countries as a fallback
 ##             "Euro" takes average from all european countries as a fallback
-##              NA or any other input takes Thompson data as a fallback
+##              NA or any other input takes Thompson data (USA publication) as a fallback
 
 # 1. Load template from .csv
-#      Template includes all years from 1976:1918, which are fixed across countries
-template = as.data.frame(read.csv('Cocirculation_template_2017.csv', header = T))
+#      Template includes all years from 1976:1918, which are fixed across countries, as only one subtype circulated in any given year, and long-term surveillance data is unavailable.
+template = as.data.frame(read.csv('Cocirculation_template_2017.csv', header = T)) ## Read in an empty template
 rownames(template) = template[,1]; template = template[,-1]
 colnames(template) = 2017:1901
 
-# 2. Fill in 1996:1977 data from Thompson paper
+# 2. Fill in 1977-1996 data from 
+#           Thompson, William W., et al. "Mortality associated with influenza and respiratory syncytial virus in the United States." Jama 289.2 (2003): 179-186.
+#    This data from the USA is the only data I could find for this time period, so we use it for all countries.
 Thompson.data = read.csv('Thompson_data.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:2017))[,1:3]
 
 template['Group1', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group1']
@@ -31,6 +35,7 @@ template['H3', as.character(1996:1977)] = Thompson.data[as.character(1996:1977),
 
 # 3. Fill in country-specific data from flu net for 2017:1997 where available
   #get.country.data is a Function that formats data to be input into template
+  # Loaded from 0func-import-formatted-country-coriculation-data.R
 ## Format country -specific data
 country.data.1997_2017 = get.country.data(country = Country)
 ## Quality checks
@@ -81,5 +86,3 @@ if(any(is.na(template['Group1', ]))){
 template
 }
 
-## test
-get.cocirculation.ref(Country = 'China', region = 'default')

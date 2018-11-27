@@ -102,17 +102,17 @@ p_exp1_exp2_noexp3 = two.hit - rowSums(three.hit, na.rm = T, dims = 2) # Matrix,
 return(list('one.hit' = one.hit, 'two.hit' = two.hit, 'three.hit' = three.hit, 'naivex3' = p_noexp1, 'naivex2' = p_exp1_noexp2, 'naivex1' = p_exp1_exp2_noexp3))
 } # End function
 
-# 
-# # ## check:
-get.e_ij(1990, 2017)
-test = get.e_ij(1990, 2017)
-sum(test$one.hit)
-sum(test$two.hit)
-sum(test$three.hit)
-sum(test$naivex1)
-sum(test$naivex2)
-sum(test$naivex3)
-sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
+# # 
+# # # ## check:
+# get.e_ij(1990, 2017)
+# test = get.e_ij(1990, 2017)
+# sum(test$one.hit)
+# sum(test$two.hit)
+# sum(test$three.hit)
+# sum(test$naivex1)
+# sum(test$naivex2)
+# sum(test$naivex3)
+# sum(test$three.hit, test$naivex1, test$naivex2, test$naivex3)
 # 
 # 
 # test = get.e_ij(2008, 2009)

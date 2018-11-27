@@ -5,8 +5,6 @@
 ## This function performs these tasks
 ##  
 ## INPUTS: country, string naming country of interest. Signals function to pull data from the country of interest from the master .csv. 
-##         currently, choose form 
-
 ## Output - Matrix with possible subtypes on rows (A, H1 or H3), and with year of observation on columns
 get.country.data = function(country){
   years = 1997:2017
@@ -57,21 +55,20 @@ get.country.data = function(country){
 ## Output: matrix with years across columns, H1, H2, H3, G1, G2 down rows for 2017:1918
 
 ## Import master spreadsheet
-cocirculation = read.csv('../CocirculationData.csv', header = TRUE)
+cocirculation = read.csv('CocirculationData.csv', header = TRUE)
 years = as.character(seq(1997, 2017))
-#source('get.country.cocirculation.data_2017.R')
+
+
 
 get.cocirculation.ref = function(Country, region = 'default'){
-
-  
   # 1. Load template from .csv
   #      Template includes all years from 1976:1918, which are fixed across countries
-  template = as.data.frame(read.csv('../Cocirculation_template_2017.csv', header = T))
+  template = as.data.frame(read.csv('Cocirculation_template.csv', header = T))
   rownames(template) = template[,1]; template = template[,-1]
   colnames(template) = 2017:1901
   
   # 2. Fill in 1996:1977 data from Thompson paper
-  Thompson.data = read.csv('../Thompson_data.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:2017))[,1:3]
+  Thompson.data = read.csv('Thompson_data.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:2017))[,1:3]
   
   template['Group1', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group1']
   template['H1', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group1']
@@ -99,8 +96,8 @@ get.cocirculation.ref = function(Country, region = 'default'){
   # 4. Fill in general data where not available
   #    Load fallback data
   #    fallback.data = Thompson.data[1997:2017]
-  Asia.fallback = read.csv('../Asia_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
-  Euro.fallback = read.csv('../Euro_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
+  Asia.fallback = read.csv('Asia_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
+  Euro.fallback = read.csv('Euro_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
   #    Figure out which years are still NA, and replace with fallback data.
   
   if(any(is.na(template['Group1', ]))){
@@ -155,7 +152,6 @@ import.country.dat = function(Country.out, region.in = 'default'){
   
   # Sourced script imports a .csv that holds data on which subtypes (H1N1, H3N2 and influenza B) were observed in specific countries, and in specific years.
   # This script also sources two functions, get.cocirculation.ref and get.country.data, which we will use below to format a matrix that tells what fraction of circulation was driven by H1N1 vs. H3N2 in a given season
-  #source('~/Dropbox/R/Reconstructions/ThreeHitModel/Clean_CocirculationImport_2017.R')
     
     # Extract country-sepcific data on which subtypes circulated in past years
     if(Country.out == 'China'){cocirculation.dat = get.cocirculation.ref('China', region.in)}

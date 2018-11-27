@@ -20,6 +20,10 @@ Years.out = as.integer(c(1997, 2003:2017))
 #
 # We also care about birth years from 1918:2017
 birth.years = 1918:2017
+
+
+
+
 ######################################################################################
 # 2.a Initialize master matrices
 #Rows - which country and year are we doing the reconstruction from the persepctive of?
@@ -31,10 +35,6 @@ birth.years = 1918:2017
 # ...etc.
 master.g1p_111 = master.g1p_110 = master.g1p_101 = master.g1p_100 = master.g1p_011 = master.g1p_010 = master.g1p_001 = master.g1p_000 =
 master.g2p_111 = master.g2p_110 = master.g2p_101 = master.g2p_100 = master.g2p_011 = master.g2p_010 = master.g2p_001 = master.g2p_000 =  matrix(0, nrow = length(Countries.out)*length(Years.out), ncol = length(birth.years), dimnames = list(paste(rep(Years.out, length(Countries.out)), rep(Countries.out, each = length(Years.out)), sep = ''), rev(birth.years)))
-
-# aster.H1p_111 = master.H1p_110 = master.H1p_101 = master.H1p_100 = master.H1p_011 = master.H1p_010 = master.H1p_001 = master.H1p_000 =
-#   master.H2p_111 = master.H2p_110 = master.H2p_101 = master.H2p_100 = master.H2p_011 = master.H2p_010 = master.H2p_001 = master.H2p_000 =
-#   master.H3p_111 = master.H3p_110 = master.H3p_101 = master.H3p_100 = master.H3p_011 = master.H3p_010 = master.H3p_001 = master.H3p_000 = 
 
 ######################################################################################
 # 2.b Fill in the master matrices:
@@ -57,45 +57,35 @@ for(cc in Countries.out){ # COUNTRY LOOP
       row.string = paste(yy, cc, sep = '') # This will yield a string, e.g. "2013Vietnam". Use that string to call the named row of the master matrix below.
       
       # Fill in correct row and column of each output matrix by taking the sum of the relevant probabilities
-      master.g1p_111[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H1 + LISTofall$H1_H1_H2 + LISTofall$H1_H2_H1 + LISTofall$H1_H2_H2 + LISTofall$H2_H1_H1 + LISTofall$H2_H1_H2 + LISTofall$H2_H2_H1 + LISTofall$H2_H2_H2, na.rm = TRUE)
-      master.g1p_110[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H3 + LISTofall$H1_H2_H3 + LISTofall$H2_H1_H3 + LISTofall$H2_H2_H3 + LISTofall$H1_H1_n + LISTofall$H1_H2_n + LISTofall$H2_H1_n + LISTofall$H2_H2_n, na.rm = TRUE)
-      master.g1p_101[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H1 + LISTofall$H1_H3_H2 + LISTofall$H2_H3_H1 + LISTofall$H2_H3_H2, na.rm = TRUE)
-      master.g1p_100[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H3 + LISTofall$H1_H3_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H1_n_n + LISTofall$H2_n_n, na.rm = TRUE)
-      master.g1p_011[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H1 + LISTofall$H3_H1_H2 + LISTofall$H3_H2_H1 + LISTofall$H3_H2_H2, na.rm = TRUE)
-      master.g1p_010[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H3 + LISTofall$H3_H1_n + LISTofall$H3_H2_n + LISTofall$H3_H2_n, na.rm = TRUE)
-      master.g1p_001[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H1 + LISTofall$H3_H3_H2, na.rm = TRUE)
-      master.g1p_000[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n, na.rm = TRUE)
+      master.g1p_111[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H[12]_H[12]_H[12]', x = names(LISTofall))])
+      master.g1p_110[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H[12]_H[12]_H?[3n]', x = names(LISTofall))])
+      master.g1p_101[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H[12]_H?[3n]_H[12]', x = names(LISTofall))])
+      master.g1p_100[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H[12]_H?[3n]_H?[3n]', x = names(LISTofall))])
+      master.g1p_011[row.string, as.character(bb)] =  Reduce(sum, LISTofall[grep(pattern = 'H?[3n]_H[12]_H[12]', x = names(LISTofall))])
+      master.g1p_010[row.string, as.character(bb)] =  Reduce(sum, LISTofall[grep(pattern = 'H?[3n]_H[12]_H?[3n]', x = names(LISTofall))])
+      master.g1p_001[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H?[3n]_H?[3n]_H[12]', x = names(LISTofall))])
+      master.g1p_000[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H?[3n]_H?[3n]_H?[3n]', x = names(LISTofall))])
       #(master.g1p_111 + master.g1p_110 + master.g1p_101 + master.g1p_100 + master.g1p_011 + master.g1p_010 + master.g1p_001 + master.g1p_000)[row.string, as.character(bb)]
 
       
-      master.g2p_000[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H1 + LISTofall$H1_H1_H2 + LISTofall$H1_H2_H1 + LISTofall$H1_H2_H2 + LISTofall$H2_H1_H1 + LISTofall$H2_H1_H2 + LISTofall$H2_H2_H1 + LISTofall$H2_H2_H2, na.rm = TRUE)
-      master.g2p_001[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H3 + LISTofall$H1_H2_H3 + LISTofall$H2_H1_H3 + LISTofall$H2_H2_H3 + LISTofall$H1_H1_n + LISTofall$H1_H2_n + LISTofall$H2_H1_n + LISTofall$H2_H2_n, na.rm = TRUE)
-      master.g2p_010[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H1 + LISTofall$H1_H3_H2 + LISTofall$H2_H3_H1 + LISTofall$H2_H3_H2, na.rm = TRUE)
-      master.g2p_011[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H3 + LISTofall$H1_H3_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H1_n_n + LISTofall$H2_n_n, na.rm = TRUE)
-      master.g2p_100[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H1 + LISTofall$H3_H1_H2 + LISTofall$H3_H2_H1 + LISTofall$H3_H2_H2, na.rm = TRUE)
-      master.g2p_101[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H3 + LISTofall$H3_H1_n + LISTofall$H3_H2_n + LISTofall$H3_H2_n, na.rm = TRUE)
-      master.g2p_110[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H1 + LISTofall$H3_H3_H2, na.rm = TRUE)
-      master.g2p_111[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n, na.rm = TRUE)
-      
-      
-      # ## H1N1 specific
-      # master.H1p_111[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H1, na.rm = TRUE)
-      # master.H1p_110[row.string, as.character(bb)] = sum(LISTofall$H1_H1_H3 + LISTofall$H1_H1_H2 + LISTofall$H1_H1_n, na.rm = TRUE)
-      # master.H1p_101[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H1 + LISTofall$H1_H2_H1, na.rm = TRUE)
-      # master.H1p_100[row.string, as.character(bb)] = sum(LISTofall$H1_H3_H3 + LISTofall$H1_H3_n + LISTofall$H1_n_n + LISTofall$H1_H2_H2 + LISTofall$H1_H2_H3 +  LISTofall$H1_H3_H2 + LISTofall$H1_H2_n, na.rm = TRUE)
-      # master.H1p_011[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H1 + LISTofall$H2_H1_H1, na.rm = TRUE)
-      # master.H1p_010[row.string, as.character(bb)] = sum(LISTofall$H3_H1_H3 + LISTofall$H3_H1_n +  LISTofall$H2_H1_H2 + LISTofall$H2_H1_H3 + LISTofall$H2_H1_n +  LISTofall$H3_H1_H2, na.rm = TRUE)
-      # master.H1p_001[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H1 + LISTofall$H2_H2_H1 + LISTofall$H2_H3_H1 +  LISTofall$H3_H2_H1, na.rm = TRUE)
-      # 
-      # master.H1p_000[row.string, as.character(bb)] = sum(LISTofall$H3_H3_H3 + LISTofall$H3_H3_n + LISTofall$H3_n_n + LISTofall$n_n_n + LISTofall$H2_H2_H2 + LISTofall$H2_H2_H3 +  LISTofall$H2_H2_n + LISTofall$H2_H3_H2 + LISTofall$H2_n_n + LISTofall$H2_H3_H3 + LISTofall$H2_H3_n + LISTofall$H3_H2_H2 + LISTofall$H3_H2_n + LISTofall$H3_H2_n + LISTofall$H3_H3_H2, na.rm = TRUE)
-      # (master.H1p_111 + master.H1p_110 + master.H1p_101 + master.H1p_100 + master.H1p_011 + master.H1p_010 + master.H1p_001 + master.H1p_000)[row.string, as.character(bb)]
+      master.g2p_000[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H?[12n]_H?[12n]_H?[12n]', x = names(LISTofall))])
+      master.g2p_001[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H?[12n]_H?[12n]_H3', x = names(LISTofall))])
+      master.g2p_010[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H?[12n]_H3_H?[12n]', x = names(LISTofall))])
+      master.g2p_011[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H?[12n]_H3_H3', x = names(LISTofall))])
+      master.g2p_100[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H3_H?[12n]_H?[12n]', x = names(LISTofall))])
+      master.g2p_101[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H3_H?[12n]_H3', x = names(LISTofall))])
+      master.g2p_110[row.string, as.character(bb)] = Reduce(sum, LISTofall[grep(pattern = 'H3_H3_H?[12n]', x = names(LISTofall))])
+      master.g2p_111[row.string, as.character(bb)] = Reduce(sum, LISTofall$H3_H3_H3)
+      #(master.g2p_111 + master.g2p_110 + master.g2p_101 + master.g2p_100 + master.g2p_011 + master.g2p_010 + master.g2p_001 + master.g2p_000)[row.string, as.character(bb)]
+
       
     } # CLOSE BIRTH YEAR LOOP
   }# CLOSE INCIDENCE YEAR LOOP
 } # CLOSE COUNTRY LOOP
 
 
-
+## Last updated 7 Nov 2018
+## Edited to verify accounting of naive individiuals
 save(list = grep(pattern = "master.\\w+_\\w+", ls(), value = TRUE), file = "Three_hit_weights.RData")
 
 
