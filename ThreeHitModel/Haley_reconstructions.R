@@ -1,9 +1,9 @@
 ## Three-hit reconstructions for Haley
 
 ### Code at the bottom plots the reconstruction outputs.
-setwd('~/Dropbox/R/Reconstructions/ThreeHitModel/')
-source('country_data_import.R')  ## Source functions to import data on which subtypes cicrculated in which seasons in different countries
-source('compute_proportion_matrices_threehit.R') ## Source functions that compute the probability of first, second and third exposure at 
+setwd('~/Dropbox/R/Reconstructions/')
+source('0func-country_data_import.R')  ## Source functions to import data on which subtypes cicrculated in which seasons in different countries
+source('ThreeHitModel/compute_proportion_matrices_threehit.R') ## Source functions that compute the probability of first, second and third exposure at 
 ## age x, y, and z (i.e. first exposure occurring x, y and z years after birth.) Then cross-reference these probabilities with data on
 ## the subtypes circulating in years x, y and z, to calculate overall probabilities of first, second and third exposure to a particular subtype.
 
@@ -40,7 +40,7 @@ for(cc in Countries.out){ # COUNTRY LOOP
     ## want to try multiple years
     
     for(bb in birth.years){ #BIRTH YEAR LOOP
-      print(bb)
+      #print(bb) # For progress checking
       if(bb > yy){ # break if the birth year hasn't yet happened
         stop(paste('birth year', bb, '> incidence year', yy, '. Birth year has not yet occurred.'))
       }

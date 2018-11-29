@@ -1,24 +1,23 @@
 ### This script populates and then saves master matrices for all imprinting cases in the two hit model
-### Load results from ""
-### TAKES SEVERAL MINUTES TO RUN. LOAD SAVED RESULTS IF POSSIBLE.
+### TAKES A WHILE TO RUN IF MULTIPLE COUNTRIES, YEARS DESIRED. LOAD SAVED RESULTS IF POSSIBLE. SAVE RESULTS AFTER RUNNING.
 ### Code at the bottom plots the reconstruction outputs.
-setwd('~/Dropbox/R/Reconstructions/ThreeHitModel/')
-source('country_data_import.R')
-source('compute_proportion_matrices_threehit.R')
+### This script is essentially a wrapper that repeatedly calls the function defined in ThreeHitModel/01func-get-yr-and....
+### Outputs must be repeated for each unique country and year in the data
+setwd('~/Dropbox/R/Reconstructions/')
+source('0func-country_data_import.R')
+source('ThreeHitModel/01func-get-yr-and-subtype-specific-probs.R')
 
-# 1. To calculate outputs for each country and year of interest, use get_proportion(b_yr, i_yr, flu_circ)
-#   Note that each time you call this function you will need to import data from each relevant country.
-#   Use of flu_circ as a variable to input the proper matrix each time you want to calculate HXp_xx
-#   i.e. flu_circ = import.country.dat('Vietnam', region.in = 'Asia')
-
-# 2. Once you are able to use the pseudocode script to output H1p_11, H1p_10, ... etc., we can start filling in the master matrices.
-#   Note that we have data from 1997, and 2003:2017, and from China, Cambodia, Egypt, Indonesia, Vietnam and Thailand. Set:
+## Define a vector of countries for which outputs are desired.
+## See 0func-country-data-import in the main project folder for a list of available countries
+## See readme in main project folder for workflow to add new countries
 Countries.out = c('China', 'Cambodia', 'Egypt', 'Indonesia', 'Vietnam', 'Thailand')
-#Countries.out = 'China'
+
+## Define years of case observation. Include all years in which data was observed.
+## Imprinting probabilities in children will change from year to year as children get older and have more exposure opportunities.
 Years.out = as.integer(c(1997, 2003:2017))
-#Years.out = as.integer(2011)
-#
-# We also care about birth years from 1918:2017
+
+# Define birth years of interest. We generally care about birth years from 1918:present
+# Scripts are currently set up to do reconstructions up to 2017
 birth.years = 1918:2017
 
 
@@ -30,8 +29,8 @@ birth.years = 1918:2017
 #Cols - what birth year are we estimating imprinting probabilities for?
 
 # Initialize a matrix in which to store probs of HxNx imprinting
-# master.Hxp_11 stores probs of 1st and 2nd exposure to Hx
-# master.Hxp_10 stores probs of 1st exposure to Hx, but 2nd exposure to some other subtype
+# master.Hxp_110 stores probs of 1st and 2nd exposure to group x, 3rd exposure to other group
+# master.Hxp_100 stores probs of 1st exposure to group x, 2nd and 3rd exposure to other group
 # ...etc.
 master.g1p_111 = master.g1p_110 = master.g1p_101 = master.g1p_100 = master.g1p_011 = master.g1p_010 = master.g1p_001 = master.g1p_000 =
 master.g2p_111 = master.g2p_110 = master.g2p_101 = master.g2p_100 = master.g2p_011 = master.g2p_010 = master.g2p_001 = master.g2p_000 =  matrix(0, nrow = length(Countries.out)*length(Years.out), ncol = length(birth.years), dimnames = list(paste(rep(Years.out, length(Countries.out)), rep(Countries.out, each = length(Years.out)), sep = ''), rev(birth.years)))
