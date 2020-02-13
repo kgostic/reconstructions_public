@@ -5,7 +5,11 @@
 ## This function performs these tasks
 ##  
 ## INPUTS: country, string naming country of interest. Signals function to pull data from the country of interest from the master .csv. 
-## Output - Matrix with possible subtypes on rows (A, H1 or H3), and with year of observation on columns
+## Output - Matrix with subtypes on rows (A, H1 or H3), and with year of observation on columns. 
+##  For "A" row, entries give total specimens observed
+##  For "H1' and 'H3' rows, entries show fraction of circulation caused by each subtype. If data is not sufficient, function returns NA, and we fill in the value later.
+
+## Note row "All" in outputs is a relic of old code structure and always contains NA.
 get.country.data = function(country){
   years = 1997:2017
   types = c('All', 'A', 'H1', 'H3')
@@ -33,6 +37,9 @@ get.country.data = function(country){
   country.dat
 }
 ############################################# END FUNCTION 1 ######################################################
+## Example 
+# get.country.data('China')
+# get.country.data('USA')
 ############################################# get.country.data ####################################################
 
 
@@ -41,7 +48,7 @@ get.country.data = function(country){
 ################################################ FUNCTION 2 #######################################################
 ############################################# get.cocirculation.ref ###############################################
 ## This function reads the output of get.country.data, and then checks that imported data contains a sufficient number
-##    of reported viruses to calculate a reasonably accurate H1 and H3 proportion. If not enough cases observed, this
+##    of reported viruses to calculate a reasonably accurate H1 and H3 proportion. If not enough cases are observed, this
 ##    function substutites aggregate data form across all countries in the region, or from the US.
 ## This function also tabluates circulation fractions from 1918-2017, whereas get.country.data only tabulates
 ##    fractions from 1997:2017 (the years in which virological surveillance are reliably available from Flu Net)
@@ -52,7 +59,7 @@ get.country.data = function(country){
 ##             "Euro" takes average from all european countries as a fallback
 ##              NA or any other input takes Thompson data as a fallback
 
-## Output: matrix with years across columns, H1, H2, H3, G1, G2 down rows for 2017:1918
+## Output: matrix with years across columns, H1N1, H2N2, H3N3, Group 1, Group 2 down rows for 2017:1918. Entries give fraction of circulation caused by the subtype or group of interest.
 
 ## Import master spreadsheet
 cocirculation = read.csv('CocirculationData.csv', header = TRUE)
@@ -67,14 +74,14 @@ get.cocirculation.ref = function(Country, region = 'default'){
   rownames(template) = template[,1]; template = template[,-1]
   colnames(template) = 2017:1901
   
-  # 2. Fill in 1996:1977 data from Thompson paper
-  Thompson.data = read.csv('Thompson_data.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:2017))[,1:3]
+  # 2. Fill in fallback data from USA
+  USA.data = read.csv('USA_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:2017))[,1:3]
   
-  template['Group1', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group1']
-  template['H1', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group1']
-  template['H2', as.character(1996:1977)] = 0
-  template['Group2', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group2']
-  template['H3', as.character(1996:1977)] = Thompson.data[as.character(1996:1977), 'Group2']
+  template['Group1', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group1']
+  template['H1', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group1']
+  template['H2', as.character(1996:1977)] = 0 ## Did not circulate from 1996 on
+  template['Group2', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group2']
+  template['H3', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group2']
   
   
   # 3. Fill in country-specific data from flu net for 2017:1997 where available
@@ -93,9 +100,9 @@ get.cocirculation.ref = function(Country, region = 'default'){
   template['Group2', as.character(2017:1997)] = colSums(template[c('H3'), as.character(2017:1997)])
   
   
-  # 4. Fill in general data where not available
+  # 4. Fill in general data where >=50 country-specific specimens not available
   #    Load fallback data
-  #    fallback.data = Thompson.data[1997:2017]
+  #    fallback.data = USA.data[1997:2017]
   Asia.fallback = read.csv('Asia_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
   Euro.fallback = read.csv('Euro_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
   #    Figure out which years are still NA, and replace with fallback data.
@@ -114,11 +121,11 @@ get.cocirculation.ref = function(Country, region = 'default'){
       template['Group2', proxy.years] = Euro.fallback[proxy.years, 'Group2']
       template['H3', proxy.years] = Euro.fallback[proxy.years, 'Group2'] #H3 was the only G2 virus circulating
     }else{ # Otherwise, fall back on data from the US (Thompson et al.)
-      template['Group1', proxy.years] = Thompson.data[proxy.years, 'Group1']
-      template['H1', proxy.years] = Thompson.data[proxy.years, 'Group1'] #H1 was the only G1 virus circulating
+      template['Group1', proxy.years] = USA.data[proxy.years, 'Group1']
+      template['H1', proxy.years] = USA.data[proxy.years, 'Group1'] #H1 was the only G1 virus circulating
       template['H2', proxy.years] = 0                                    #H2 was not circulating
-      template['Group2', proxy.years] = Thompson.data[proxy.years, 'Group2']
-      template['H3', proxy.years] = Thompson.data[proxy.years, 'Group2'] #H3 was the only G2 virus circulating
+      template['Group2', proxy.years] = USA.data[proxy.years, 'Group2']
+      template['H3', proxy.years] = USA.data[proxy.years, 'Group2'] #H3 was the only G2 virus circulating
     }
   }
   
@@ -126,6 +133,10 @@ get.cocirculation.ref = function(Country, region = 'default'){
   template
 }
 ############################################## END FUNCTION 2 #####################################################
+# ## Examples
+# get.cocirculation.ref(Country = 'China', region = 'Asia')
+# get.cocirculation.ref(Country = 'Belgium', region = 'Europe')
+# get.cocirculation.ref(Country = 'USA')
 ############################################# get.cocirculation.ref ###############################################
 
 
@@ -168,7 +179,7 @@ import.country.dat = function(Country.out, region.in = 'default'){
     if(Country.out == 'Pakistan'){cocirculation.dat = get.cocirculation.ref('Pakistan', region.in)}
     if(Country.out == 'Nigeria'){cocirculation.dat = get.cocirculation.ref('Nigeria', region.in)}
     if(Country.out == 'Austria'){cocirculation.dat = get.cocirculation.ref('Austria', region.in)}
-    if(Country.out == 'Belguim'){cocirculation.dat = get.cocirculation.ref('Belgium', region.in)}
+    if(Country.out == 'Belgium'){cocirculation.dat = get.cocirculation.ref('Belgium', region.in)}
     if(Country.out == 'Denmark'){cocirculation.dat = get.cocirculation.ref('Denmark', region.in)}
     if(Country.out == 'Estonia'){cocirculation.dat = get.cocirculation.ref('Estonia', region.in)}
     if(Country.out == 'Greece'){cocirculation.dat = get.cocirculation.ref('Greece', region.in)}
@@ -187,10 +198,6 @@ import.country.dat = function(Country.out, region.in = 'default'){
   cocirculation.dat
 }
 ### End function ###
-
-
-
-
 # ## Examples
 # import.country.dat('Vietnam', region.in = 'Asia')
 # import.country.dat('USA')

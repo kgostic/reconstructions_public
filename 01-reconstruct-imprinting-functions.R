@@ -1,14 +1,10 @@
-rm(list = ls())
-source('0func-country_data_import.R')
-
-## OUTPUTS
-outfile1 = paste('onehit-weights-', Sys.Date(), '.RData', sep = '')
-outfile1
+#rm(list = ls())
+source('00-country_data_import_functions.R')
 
 ## Function to calculate probs of first exposure in year x, given birth in year y
 ## INPUTS
 ##    - year in which an individual was born (birth.year)
-##    - year in which the individual became infected with bird flu (incidence year)
+##    - year in which the individual became infected (incidence year)
 ## OUTPUTS
 ##    - vector of 13 probabilities, the first representing the probability of first flu infection in the first year of life (age 0), the second representing the probability of first flu infection in the second year of life (age 1), and so on up to the 13th year of life (age 12)
 get.e_ij = function(birth.year, incidence.year){
@@ -39,7 +35,8 @@ get.e_ij = function(birth.year, incidence.year){
   e_ij = apply(prod.mat, 1, prod)
   e_ij # Output probability of first infection in year j given birth in year i.
 }
-
+## test
+# get.e_ij(birth.year = 2015, incidence.year = 2017)
 
 
 
@@ -126,14 +123,23 @@ weights.master.2[((cc-1)*length(years.out))+1:length(years.out), ] = H2.mat
 weights.master.3[((cc-1)*length(years.out))+1:length(years.out), ] = H3.mat
 weights.master.naiive[((cc-1)*length(years.out))+1:length(years.out), ] = naiive.mat
   }
+  
+  ## Check that the total for each birth year is 1 when rounded to 4 decimals
+  total = weights.master.1+weights.master.2+weights.master.3+weights.master.naiive
+  if(any(! (round(total, 4)%in%c(0,1)) )){warning('Weights do not sum to 1')}
+  
+  ## Normalize so that sum of weights is exactly 1 in each birth year
+  total[which(total==0)] = 1 # Reset 0 values so as not to divide by 0
+  weights.master.H1N1 = weights.master.1/(total)
+  weights.master.H2N2 = weights.master.2/(total)
+  weights.master.H3N2 = weights.master.3/(total)
+  weights.master.naiive = weights.master.naiive/(total)
 
-return(list(weights.master.1 = weights.master.1, weights.master.2=weights.master.2, weights.master.3=weights.master.3, weights.master.naiive=weights.master.naiive))
+return(list(weights.master.H1N1 = weights.master.H1N1, weights.master.H2N2 = weights.master.H2N2, weights.master.H3N2 = weights.master.H3N2, weights.master.naiive=weights.master.naiive))
 }
 
 
-# Outputs
-yo = c(1997, 2003:2017)
-co = c('China', 'Cambodia', 'Egypt', 'Indonesia', 'Vietnam', 'Thailand')
-wts = get.weights.master(years.out = yo, Countries.out = co, region.in = rep('Asia', 6))
-attach(wts)
-save(weights.master.1, weights.master.2, weights.master.3, weights.master.naiive, file = outfile1)
+# # Test Outputs
+# yo = c(1997, 2003:2017)
+# co = c('China', 'Cambodia', 'Egypt', 'Indonesia', 'Vietnam', 'Thailand')
+# wts = get.weights.master(years.out = yo, Countries.out = co, region.in = rep('Asia', 6))
