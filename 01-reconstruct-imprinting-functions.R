@@ -1,6 +1,9 @@
 #rm(list = ls())
 source('00-country_data_import_functions.R')
 
+
+
+
 ## Function to calculate probs of first exposure in year x, given birth in year y
 ## INPUTS
 ##    - year in which an individual was born (birth.year)
@@ -10,10 +13,10 @@ source('00-country_data_import_functions.R')
 get.e_ij = function(birth.year, incidence.year){
   ################# Inputs ---------------
   #Load saved data on intensity of influenza circulation in specific years of first infection
-  intensities = read.csv('Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:2017
+  intensities = read.csv('Intensitymatser.csv', col.names = c('Year', 'Intensity')); rownames(intensities) = 1911:max.year
   p.est = .28 # Set the annual probability of first infection, estimated from serological data (see two papers by Sauerbrei et al., and methods from Gostic et al., Science 2016)
   # Weighted attack rate = annual prob infection weighted by circulation intensity
-  weighted.attack.rate = p.est*(intensities$Intensity); names(weighted.attack.rate) = 1911:2017
+  weighted.attack.rate = p.est*(intensities$Intensity); names(weighted.attack.rate) = 1911:max.year
   
   ################# Calculations ---------------
   jjs = birth.year:min(birth.year+12, incidence.year) #Possible years of first infection (ages 0-12)
@@ -60,7 +63,7 @@ get.weights.master = function(years.out, Countries.out, region.in = 'default'){
   #head(cocirculation) # Data frame that records which subtypes circulated in each country and year
   
   # Set years of birth (we will estimate probabilities of imprinting to H1N1, H2N2 and H3N2 for each of these birth years)
-  birth.years = 1918:2017
+  birth.years = 1918:max.year
   infection.years = birth.years
   
 

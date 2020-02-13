@@ -1,3 +1,6 @@
+max.year = 2017 ## Set the maximum birth year
+cat(sprintf('max.year is %i. This is the maximum possible year of case observation and the maximum birth year allowed by this code.', max.year), '\nChange this by adding more data and then setting max.year value in 00-country_data_import_functions.R. See Readme for more info.')
+
 
 ################################################ FUNCTION 1 #######################################################
 ############################################# get.country.data ####################################################
@@ -11,7 +14,7 @@
 
 ## Note row "All" in outputs is a relic of old code structure and always contains NA.
 get.country.data = function(country){
-  years = 1997:2017
+  years = 1997:max.year
   types = c('All', 'A', 'H1', 'H3')
   country.dat = matrix(NA, nrow = length(types), ncol = length(years), dimnames = list(types, years))
   for(ii in 1:length(years)){
@@ -50,8 +53,8 @@ get.country.data = function(country){
 ## This function reads the output of get.country.data, and then checks that imported data contains a sufficient number
 ##    of reported viruses to calculate a reasonably accurate H1 and H3 proportion. If not enough cases are observed, this
 ##    function substutites aggregate data form across all countries in the region, or from the US.
-## This function also tabluates circulation fractions from 1918-2017, whereas get.country.data only tabulates
-##    fractions from 1997:2017 (the years in which virological surveillance are reliably available from Flu Net)
+## This function also tabluates circulation fractions from 1918-max.year, whereas get.country.data only tabulates
+##    fractions from 1997:max.year (the years in which virological surveillance are reliably available from Flu Net)
 
 ## Input: country of interest
 ##     Reads and re-formats relevant data from master .csv files saved in directory
@@ -59,11 +62,11 @@ get.country.data = function(country){
 ##             "Euro" takes average from all european countries as a fallback
 ##              NA or any other input takes Thompson data as a fallback
 
-## Output: matrix with years across columns, H1N1, H2N2, H3N3, Group 1, Group 2 down rows for 2017:1918. Entries give fraction of circulation caused by the subtype or group of interest.
+## Output: matrix with years across columns, H1N1, H2N2, H3N3, Group 1, Group 2 down rows for max.year:1918. Entries give fraction of circulation caused by the subtype or group of interest.
 
 ## Import master spreadsheet
 cocirculation = read.csv('CocirculationData.csv', header = TRUE)
-years = as.character(seq(1997, 2017))
+years = as.character(seq(1997, max.year))
 
 
 
@@ -72,10 +75,10 @@ get.cocirculation.ref = function(Country, region = 'default'){
   #      Template includes all years from 1976:1918, which are fixed across countries
   template = as.data.frame(read.csv('Cocirculation_template.csv', header = T))
   rownames(template) = template[,1]; template = template[,-1]
-  colnames(template) = 2017:1901
+  colnames(template) = max.year:1901
   
   # 2. Fill in fallback data from USA
-  USA.data = read.csv('USA_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:2017))[,1:3]
+  USA.data = read.csv('USA_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source', 'X'), row.names = as.character(1977:max.year))[,1:3]
   
   template['Group1', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group1']
   template['H1', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group1']
@@ -84,31 +87,31 @@ get.cocirculation.ref = function(Country, region = 'default'){
   template['H3', as.character(1996:1977)] = USA.data[as.character(1996:1977), 'Group2']
   
   
-  # 3. Fill in country-specific data from flu net for 2017:1997 where available
+  # 3. Fill in country-specific data from flu net for max.year:1997 where available
   #get.country.data is a Function that formats data to be input into template
   ## Format country -specific data
-  country.data.1997_2017 = get.country.data(country = Country)
+  country.data.1997_max.year = get.country.data(country = Country)
   ## Quality checks
   #    - remove data from years with < 50 specimens
-  if(any(country.data.1997_2017['A', is.na(country.data.1997_2017['A', ]) == FALSE] < 50)) country.data.1997_2017[ , which(country.data.1997_2017['A', ] < 50)] = rep(NA, 4)
+  if(any(country.data.1997_max.year['A', is.na(country.data.1997_max.year['A', ]) == FALSE] < 50)) country.data.1997_max.year[ , which(country.data.1997_max.year['A', ] < 50)] = rep(NA, 4)
   
   ## Fill in template
-  template['H1', as.character(2017:1997)] = country.data.1997_2017['H1', as.character(2017:1997)]
-  template['H3', as.character(2017:1997)] = country.data.1997_2017['H3', as.character(2017:1997)]
-  template['H2', as.character(2017:1997)] = 0
-  template['Group1', as.character(2017:1997)] = colSums(template[c('H1', 'H2'), as.character(2017:1997)])
-  template['Group2', as.character(2017:1997)] = colSums(template[c('H3'), as.character(2017:1997)])
+  template['H1', as.character(max.year:1997)] = country.data.1997_max.year['H1', as.character(max.year:1997)]
+  template['H3', as.character(max.year:1997)] = country.data.1997_max.year['H3', as.character(max.year:1997)]
+  template['H2', as.character(max.year:1997)] = 0
+  template['Group1', as.character(max.year:1997)] = colSums(template[c('H1', 'H2'), as.character(max.year:1997)])
+  template['Group2', as.character(max.year:1997)] = colSums(template[c('H3'), as.character(max.year:1997)])
   
   
   # 4. Fill in general data where >=50 country-specific specimens not available
   #    Load fallback data
-  #    fallback.data = USA.data[1997:2017]
-  Asia.fallback = read.csv('Asia_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
-  Euro.fallback = read.csv('Euro_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:2017))[,1:3]
+  #    fallback.data = USA.data[1997:max.year]
+  Asia.fallback = read.csv('Asia_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:max.year))[,1:3]
+  Euro.fallback = read.csv('Euro_fallback.csv', header = FALSE, skip = 1, col.names = c('Year', 'Group1', 'Group2', 'Source'), row.names = as.character(1997:max.year))[,1:3]
   #    Figure out which years are still NA, and replace with fallback data.
   
   if(any(is.na(template['Group1', ]))){
-    proxy.years = as.character(2017:1997)[which(is.na(template['Group1', as.character(2017:1997)]))]
+    proxy.years = as.character(max.year:1997)[which(is.na(template['Group1', as.character(max.year:1997)]))]
     if(region == 'Asia'){ # If Asian country, substitute pooled data from asian countries in years where not enough samples exist for a single country
       template['Group1', proxy.years] = Asia.fallback[proxy.years, 'Group1']
       template['H1', proxy.years] = Asia.fallback[proxy.years, 'Group1'] #H1 was the only G1 virus circulating
@@ -154,7 +157,7 @@ get.cocirculation.ref = function(Country, region = 'default'){
 ## Input - 
 #         Country.out - string. Valid inputs are listed inside the function below.
 #         region.in - string vector of the same length as 'countries in'. In cases where there is not enough data on which subtypes circulated in the country of interest in particular year, we are forced to substitute data from the surrounding region. This option tells the function which "fallback" data to draw from. Options are: 'default' - pulls data from the USA. 'Asia' (aggregate data from Asian countries) or 'Euro' (aggregate data from European countries). If no input is given, the function will automatically use data from the USA for all reconstructions.
-## Output - Matrix of values showing the fraction of influenza viruses of different types that circulated in years from 1918:2017
+## Output - Matrix of values showing the fraction of influenza viruses of different types that circulated in years from 1918:max.year
 
 #THIS REFORMATS COUNTRY DATA
 import.country.dat = function(Country.out, region.in = 'default'){
